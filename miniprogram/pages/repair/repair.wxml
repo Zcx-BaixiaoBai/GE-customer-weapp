@@ -1,0 +1,227 @@
+<view class="repair-container">
+
+  <!-- 阶段1: 实时相机取景 -->
+  <view class="phase-camera" wx:if="{{phase === 'camera'}}">
+    <camera class="camera-preview" device-position="back" flash="off"></camera>
+    <view class="camera-overlay"></view>
+
+    <view class="camera-close" bindtap="goHome">
+      <view class="close-line"></view>
+      <view class="close-line rotate"></view>
+    </view>
+
+    <view class="camera-hint-wrap">
+      <text class="camera-hint">拍摄问题区域</text>
+      <text class="camera-sub">点击下方按钮拍照</text>
+    </view>
+
+    <view class="camera-shutter-wrap">
+      <view class="shutter-halo"></view>
+      <view class="camera-shutter" bindtap="takePhoto">
+        <view class="shutter-inner"></view>
+      </view>
+      <text class="shutter-label">拍照</text>
+    </view>
+  </view>
+
+  <!-- 阶段2: 定格展示拍得照片 -->
+  <view class="phase-reviewing" wx:if="{{phase === 'reviewing'}}">
+    <image src="{{photos[photos.length-1]}}" mode="aspectFill" class="reviewing-img"></image>
+    <view class="reviewing-overlay"></view>
+
+    <view class="camera-close" bindtap="goHome">
+      <view class="close-line"></view>
+      <view class="close-line rotate"></view>
+    </view>
+
+    <view class="reviewing-top">
+      <text class="reviewing-hint">照片已拍摄</text>
+      <text class="reviewing-sub">确认照片后进行语音描述</text>
+    </view>
+
+    <view class="photo-thumbs" wx:if="{{photos.length > 1}}">
+      <image wx:for="{{photos}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="photo-thumb-small" />
+    </view>
+
+    <view class="reviewing-actions">
+      <view class="reviewing-btn retake" bindtap="retakePhoto">重拍</view>
+      <view class="reviewing-btn add-more" bindtap="addMorePhoto" wx:if="{{photos.length < 3}}">加拍</view>
+      <view class="reviewing-btn next" bindtap="goToRecording">下一步</view>
+    </view>
+  </view>
+
+  <!-- 阶段3: 按住说话 -->
+  <view class="phase-recording" wx:if="{{phase === 'recording'}}">
+    <image src="{{photos[0]}}" mode="aspectFill" class="recording-bg-img"></image>
+    <view class="recording-overlay"></view>
+
+    <view class="camera-close" bindtap="goHome">
+      <view class="close-line"></view>
+      <view class="close-line rotate"></view>
+    </view>
+
+    <!-- AI追问气泡 -->
+    <view class="ai-hint-bubble" wx:if="{{showAIHint && aiQuestion}}">
+      <view class="ai-hint-avatar">AI</view>
+      <view class="ai-hint-text">{{aiQuestion}}</view>
+    </view>
+
+    <view class="recording-hint-wrap">
+      <text class="recording-hint">语音描述问题</text>
+      <text class="recording-sub">按住下方按钮说话，松手自动分析</text>
+    </view>
+
+    <view class="voice-btn-wrap">
+      <!-- 呼吸光环和按钮在同一个wrap里，绝对居中 -->
+      <view class="voice-halo" wx:if="{{!isRecording}}"></view>
+      <view class="voice-halo red" wx:if="{{isRecording}}"></view>
+      <view class="voice-halo-2 red" wx:if="{{isRecording}}"></view>
+
+      <view class="voice-btn {{isRecording ? 'recording' : ''}}"
+            bindtouchstart="startRecording"
+            bindtouchend="stopRecording">
+        <view class="voice-waves" wx:if="{{!isRecording}}">
+          <view class="vw-bar"></view>
+          <view class="vw-bar"></view>
+          <view class="vw-bar"></view>
+          <view class="vw-bar"></view>
+          <view class="vw-bar"></view>
+        </view>
+        <view class="voice-waves active" wx:if="{{isRecording}}">
+          <view class="vw-bar"></view>
+          <view class="vw-bar"></view>
+          <view class="vw-bar"></view>
+          <view class="vw-bar"></view>
+          <view class="vw-bar"></view>
+        </view>
+      </view>
+      <text class="voice-label">
+        {{isRecording ? recordingDuration + 's 录音中' : '按住说话'}}
+      </text>
+    </view>
+
+    <view class="skip-voice" bindtap="skipToManual">
+      <text>跳过语音，文字描述</text>
+    </view>
+  </view>
+
+  <!-- 阶段4: AI分析中 -->
+  <view class="phase-analyzing" wx:if="{{phase === 'analyzing'}}">
+    <view class="analyzing-bg"></view>
+    <view class="camera-close" bindtap="goHome">
+      <view class="close-line"></view>
+      <view class="close-line rotate"></view>
+    </view>
+    <view class="analyzing-wrap">
+      <view class="ai-orb">
+        <view class="orb-ring r1"></view>
+        <view class="orb-ring r2"></view>
+        <view class="orb-ring r3"></view>
+        <view class="orb-core"></view>
+      </view>
+      <text class="analyzing-text">{{analyzeStep}}</text>
+    </view>
+  </view>
+
+  <!-- 阶段5: AI追问（缺字段） -->
+  <view class="phase-supplement" wx:if="{{phase === 'supplement'}}">
+    <view class="camera-close light" bindtap="goHome">
+      <view class="close-line dark"></view>
+      <view class="close-line dark rotate"></view>
+    </view>
+    <view class="ai-chat-row">
+      <view class="ai-avatar">
+        <view class="ai-avatar-dot"></view>
+      </view>
+      <view class="ai-bubble">
+        <text>{{aiQuestion}}</text>
+      </view>
+    </view>
+
+    <view class="supplement-card" wx:if="{{showSupplement}}">
+      <textarea class="supplement-input" placeholder="描述报修问题..."
+                value="{{supplementText}}" bindinput="onSupplementInput" auto-height />
+      <view class="supplement-submit" bindtap="submitSupplement">
+        <text>提交</text>
+      </view>
+    </view>
+    <view class="skip-btn" bindtap="skipToManual"><text>跳过，直接填写</text></view>
+  </view>
+
+  <!-- 阶段6: 手动填写 -->
+  <view class="phase-manual" wx:if="{{phase === 'manual'}}">
+    <view class="camera-close light" bindtap="goHome">
+      <view class="close-line dark"></view>
+      <view class="close-line dark rotate"></view>
+    </view>
+    <view class="form-card">
+      <view class="form-item">
+        <text class="form-label">报修类型</text>
+        <picker mode="selector" range="{{typeNames}}" value="{{typeIndex}}" bindchange="onTypeChange">
+          <view class="form-picker {{typeIndex >= 0 ? 'filled' : ''}}">{{typeIndex >= 0 ? typeNames[typeIndex] : '请选择'}}</view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">报修描述</text>
+        <textarea class="form-textarea" placeholder="请描述问题" value="{{workOrder.content}}" bindinput="onContentInput" auto-height />
+      </view>
+      <view class="form-item" wx:if="{{photos.length > 0}}">
+        <text class="form-label">照片</text>
+        <view class="photo-grid">
+          <image wx:for="{{photos}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="photo-item-img" />
+        </view>
+      </view>
+      <view class="form-item">
+        <text class="form-label">联系电话</text>
+        <input class="form-input" type="number" placeholder="手机号" value="{{phone}}" bindinput="onPhoneInput" maxlength="11" />
+      </view>
+    </view>
+    <view class="preview-btn" bindtap="goToPreviewFromManual">预览确认</view>
+  </view>
+
+  <!-- 阶段7: 预览 -->
+  <view class="phase-preview" wx:if="{{phase === 'preview'}}">
+    <view class="camera-close light" bindtap="goHome">
+      <view class="close-line dark"></view>
+      <view class="close-line dark rotate"></view>
+    </view>
+    <view class="preview-banner">
+      <view class="banner-dot"></view>
+      <text>AI已自动填写</text>
+    </view>
+    <view class="preview-card">
+      <view class="preview-row"><text class="preview-label">类型</text><text class="preview-value">{{workOrder.typeName || '未识别'}}</text></view>
+      <view class="preview-row"><text class="preview-label">报修内容</text><text class="preview-value">{{workOrder.issue}}</text></view>
+      <view class="preview-row"><text class="preview-label">报修地点</text><text class="preview-value">{{workOrder.location}}</text></view>
+      <view class="preview-row" wx:if="{{photos.length > 0}}">
+        <text class="preview-label">照片</text>
+        <view class="preview-photos">
+          <image wx:for="{{photos}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="preview-photo" />
+        </view>
+      </view>
+      <view class="preview-row"><text class="preview-label">电话</text>
+        <text class="preview-value" wx:if="{{workOrder.phone}}">{{workOrder.phone}}</text>
+        <button wx:if="{{!workOrder.phone}}" class="phone-auth-btn" open-type="getPhoneNumber" bindgetphonenumber="onGetPhone">微信授权</button>
+      </view>
+    </view>
+    <view class="preview-actions">
+      <view class="action-btn edit" bindtap="editFromPreview">修改</view>
+      <view class="action-btn submit" bindtap="submitWorkOrder">{{submitting ? '提交中' : '确认提交'}}</view>
+    </view>
+  </view>
+
+  <!-- 阶段8: 成功 -->
+  <view class="phase-success" wx:if="{{phase === 'success'}}">
+    <view class="success-circle">
+      <view class="success-check"></view>
+    </view>
+    <text class="success-title">报修提交成功</text>
+    <text class="success-order">{{workOrderId}}</text>
+    <view class="success-actions">
+      <view class="action-btn primary" bindtap="goToList">查看详情</view>
+      <view class="action-btn" bindtap="resetAll">继续报修</view>
+    </view>
+    <view class="success-home" bindtap="goHome">返回首页</view>
+  </view>
+
+</view>

@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+server/node_modules/
+miniprogram/node_modules/
+miniprogram/miniprogram_npm/
+
+# Build output
+server/dist/
+miniprogram/dist/
+
+# Environment & secrets
+server/.env
+.env
+*.env.local
+
+# IDE & system
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# WeChat DevTools
+miniprogram/project.private.config.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# WorkBuddy memory (internal)
+.workbuddy/
+
+# OS files
+desktop.ini
+nul

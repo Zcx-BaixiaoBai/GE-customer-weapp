@@ -1,0 +1,204 @@
+.profile-container {
+  min-height: 100vh;
+  background: #f5f6fa;
+}
+
+/* ========== 未登录页 ========== */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 64rpx 120rpx;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #f5f6fa 100%);
+}
+.login-logo { margin-bottom: 48rpx; }
+.logo-circle {
+  width: 160rpx; height: 160rpx; border-radius: 50%;
+  background: linear-gradient(135deg, #3370ff, #6366f1);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 16rpx 48rpx rgba(51,112,255,0.3);
+}
+.logo-inner {
+  width: 56rpx; height: 56rpx; border-radius: 50%;
+  background: #fff; box-shadow: inset 0 0 0 8rpx #3370ff;
+}
+.login-title { font-size: 44rpx; font-weight: 700; color: #fff; margin-bottom: 16rpx; }
+.login-sub { font-size: 28rpx; color: rgba(255,255,255,0.6); margin-bottom: 80rpx; }
+.login-btn {
+  width: 100%; height: 96rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #3370ff, #6366f1);
+  color: #fff; font-size: 34rpx; font-weight: 600;
+  border-radius: 48rpx; border: none;
+  box-shadow: 0 8rpx 32rpx rgba(51,112,255,0.4);
+  margin-bottom: 32rpx; padding: 0;
+}
+.login-btn::after { border: none; }
+.login-tip { font-size: 26rpx; color: rgba(255,255,255,0.4); }
+
+/* ========== 设置引导页 ========== */
+.setup-page {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 160rpx 64rpx 80rpx;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #f5f6fa 100%);
+}
+.setup-step-num {
+  font-size: 40rpx; font-weight: 700; color: #fff;
+  margin-bottom: 16rpx;
+}
+.setup-step-desc {
+  font-size: 28rpx; color: rgba(255,255,255,0.5);
+  margin-bottom: 80rpx;
+}
+
+/* 头像按钮 */
+.setup-avatar-area { margin-bottom: 48rpx; }
+.setup-avatar-btn {
+  width: 200rpx !important; height: 200rpx !important;
+  max-width: 200rpx !important; min-width: 200rpx !important;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; padding: 0 !important; margin: 0 auto;
+  border: 4rpx solid rgba(255,255,255,0.12);
+  line-height: 1;
+  box-sizing: border-box;
+}
+.setup-avatar-btn::after { border: none; }
+.setup-avatar-img { width: 100%; height: 100%; display: block; }
+.setup-avatar-empty {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12rpx;
+}
+.setup-avatar-plus {
+  width: 48rpx; height: 48rpx; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  position: relative;
+}
+.setup-avatar-plus::before {
+  content: ''; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 20rpx; height: 4rpx; background: rgba(255,255,255,0.4); border-radius: 2rpx;
+}
+.setup-avatar-plus::after {
+  content: ''; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 4rpx; height: 20rpx; background: rgba(255,255,255,0.4); border-radius: 2rpx;
+}
+.setup-avatar-label {
+  font-size: 24rpx; color: rgba(255,255,255,0.4);
+}
+
+/* 昵称输入 */
+.setup-nick-area {
+  width: 100%; margin-bottom: 80rpx;
+  background: rgba(255,255,255,0.08);
+  border-radius: 24rpx; padding: 0 32rpx;
+  border: 2rpx solid rgba(255,255,255,0.1);
+}
+.setup-nick-input {
+  width: 100%; height: 96rpx;
+  font-size: 32rpx; color: #fff;
+  text-align: center;
+}
+
+/* 完成按钮 */
+.setup-big-btn {
+  width: 100%; height: 96rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+  font-size: 34rpx; font-weight: 600;
+  border-radius: 48rpx;
+  margin-bottom: 32rpx;
+  transition: all 0.3s;
+}
+.setup-big-btn.active {
+  background: linear-gradient(135deg, #3370ff, #6366f1);
+  color: #fff;
+  box-shadow: 0 8rpx 32rpx rgba(51,112,255,0.4);
+}
+
+.setup-skip-link {
+  font-size: 28rpx; color: rgba(255,255,255,0.35);
+  padding: 16rpx 32rpx;
+}
+
+/* ========== 已登录头部 ========== */
+.profile-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding: 60rpx 32rpx 48rpx;
+  display: flex; flex-direction: column; align-items: center;
+}
+.profile-avatar {
+  width: 128rpx; height: 128rpx; border-radius: 50%;
+  background: linear-gradient(135deg, #3370ff, #6366f1);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24rpx; overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(51,112,255,0.3);
+}
+.avatar-img { width: 100%; height: 100%; }
+.avatar-text { font-size: 40rpx; color: #fff; font-weight: 700; }
+.profile-name { font-size: 36rpx; font-weight: 600; color: #fff; margin-bottom: 12rpx; }
+.profile-phone {
+  display: flex; align-items: center; gap: 12rpx;
+  background: rgba(255,255,255,0.1);
+  padding: 8rpx 24rpx; border-radius: 24rpx;
+}
+.phone-num { font-size: 28rpx; color: rgba(255,255,255,0.9); }
+.phone-tag { font-size: 22rpx; color: #00b578; background: rgba(0,181,120,0.2); padding: 2rpx 12rpx; border-radius: 8rpx; }
+
+/* ========== 个人信息卡片 ========== */
+.info-card {
+  margin: 24rpx 32rpx; padding: 8rpx 32rpx;
+  background: #fff; border-radius: 24rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+}
+.info-title { font-size: 28rpx; color: #999; padding: 24rpx 0 8rpx; }
+.info-row {
+  display: flex; align-items: center;
+  padding: 24rpx 0; border-bottom: 1rpx solid #f5f5f5;
+}
+.info-row:last-child { border-bottom: none; }
+.info-label { font-size: 30rpx; color: #1a1a2e; width: 140rpx; flex-shrink: 0; }
+.info-value { font-size: 30rpx; color: #3370ff; flex: 1; text-align: right; }
+.info-input { flex: 1; text-align: right; font-size: 30rpx; color: #1a1a2e; }
+.info-avatar-btn {
+  width: 80rpx !important; height: 80rpx !important;
+  max-width: 80rpx !important; min-width: 80rpx !important;
+  border-radius: 50%;
+  background: #f0f1f6; padding: 0 !important; margin: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; line-height: 1; box-sizing: border-box;
+}
+.info-avatar-btn::after { border: none; }
+.info-avatar { width: 100%; height: 100%; border-radius: 50%; display: block; }
+.info-avatar-placeholder { font-size: 22rpx; color: #999; }
+
+/* ========== 菜单 ========== */
+.profile-menu {
+  margin: 0 32rpx; background: #fff; border-radius: 24rpx;
+  overflow: hidden; box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+}
+.menu-item {
+  display: flex; align-items: center;
+  padding: 36rpx 32rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-dot { width: 12rpx; height: 12rpx; border-radius: 50%; margin-right: 24rpx; }
+.menu-dot.blue { background: #3370ff; }
+.menu-dot.purple { background: #7b61ff; }
+.menu-title { flex: 1; font-size: 32rpx; color: #1a1a2e; }
+.menu-arrow { font-size: 32rpx; color: #ccc; }
+
+/* ========== 退出登录 ========== */
+.logout-btn {
+  margin: 48rpx 32rpx; text-align: center;
+  padding: 28rpx 0; background: #fff; border-radius: 24rpx;
+  font-size: 30rpx; color: #ff4d4f;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+}

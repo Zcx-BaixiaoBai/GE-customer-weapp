@@ -1,0 +1,19 @@
+<view class="list-container">
+  <view class="list-empty" wx:if="{{repairList.length === 0}}">
+    <view class="empty-icon">!</view>
+    <text class="empty-text">暂无报修记录</text>
+  </view>
+  <view class="repair-list" wx:else>
+    <view class="repair-item" wx:for="{{repairList}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="item-header">
+        <text class="item-type">{{item.type}}</text>
+        <text class="item-status {{item.status === '待处理' ? 'status-pending' : 'status-done'}}">{{item.status}}</text>
+      </view>
+      <text class="item-desc">{{item.description}}</text>
+      <view class="item-footer">
+        <text class="item-location">{{item.location}}</text>
+        <text class="item-time">{{item.createTime}}</text>
+      </view>
+    </view>
+  </view>
+</view>

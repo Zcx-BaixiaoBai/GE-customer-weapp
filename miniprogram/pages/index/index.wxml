@@ -1,0 +1,26 @@
+<view class="index-container">
+  <!-- 顶部品牌区 -->
+  <view class="hero">
+    <view class="hero-bg"></view>
+    <view class="hero-content">
+      <text class="hero-title">金鹰世界</text>
+      <text class="hero-subtitle">智能物业服务中心</text>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="features-grid">
+    <view class="feature-card" wx:for="{{features}}" wx:key="id"
+          bindtap="onFeatureTap" data-path="{{item.path}}">
+      <view class="feature-icon-wrap" style="background: {{item.color}}15">
+        <view class="feature-icon-inner">
+          <view class="icon icon-{{item.id}}">
+            <view class="icon-shape"></view>
+          </view>
+        </view>
+      </view>
+      <text class="feature-title">{{item.title}}</text>
+      <text class="feature-desc">{{item.desc}}</text>
+    </view>
+  </view>
+</view>

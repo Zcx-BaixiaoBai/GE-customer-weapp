@@ -1,0 +1,11 @@
+<view class="history-container">
+  <view class="history-empty" wx:if="{{historyList.length === 0}}">
+    <text>暂无历史记录</text>
+  </view>
+  <view class="history-list" wx:else>
+    <view class="history-item" wx:for="{{historyList}}" wx:key="index">
+      <text class="history-title">{{item.title || '新对话'}}</text>
+      <text class="history-time">{{item.time}}</text>
+    </view>
+  </view>
+</view>

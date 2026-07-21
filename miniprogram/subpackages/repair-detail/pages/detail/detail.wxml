@@ -1,0 +1,41 @@
+<view class="detail-container">
+  <view class="detail-card" wx:if="{{detail}}">
+    <view class="detail-row">
+      <text class="detail-label">工单号</text>
+      <text class="detail-value">{{detail.id}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">状态</text>
+      <text class="detail-value {{detail.status === '待处理' ? 'text-warning' : 'text-success'}}">{{detail.status}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">报修类型</text>
+      <text class="detail-value">{{detail.type}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">报修位置</text>
+      <text class="detail-value">{{detail.location}}</text>
+    </view>
+    <view class="detail-row detail-row-desc">
+      <text class="detail-label">问题描述</text>
+      <text class="detail-value">{{detail.description}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">紧急程度</text>
+      <text class="detail-value">{{detail.urgency}}</text>
+    </view>
+    <view class="detail-row" wx:if="{{detail.photos && detail.photos.length > 0}}">
+      <text class="detail-label">照片</text>
+      <view class="detail-photos">
+        <image wx:for="{{detail.photos}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="detail-photo" />
+      </view>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">提交时间</text>
+      <text class="detail-value">{{detail.createTime}}</text>
+    </view>
+  </view>
+  <view class="detail-empty" wx:if="{{!detail}}">
+    <text>未找到报修记录</text>
+  </view>
+</view>

@@ -1,0 +1,73 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/chat/chat",
+    "pages/repair/repair"
+  ],
+  "subpackages": [
+    {
+      "root": "subpackages/user-center",
+      "name": "user-center",
+      "pages": [
+        "pages/profile/profile",
+        "pages/history/history"
+      ]
+    },
+    {
+      "root": "subpackages/repair-detail",
+      "name": "repair-detail",
+      "pages": [
+        "pages/list/list",
+        "pages/detail/detail"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": ["user-center"]
+    },
+    "pages/repair/repair": {
+      "network": "wifi",
+      "packages": ["repair-detail"]
+    }
+  },
+  "window": {
+    "navigationBarTitleText": "金鹰世界",
+    "navigationBarBackgroundColor": "#1a1a2e",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#3370ff",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "智能问答"
+      },
+      {
+        "pagePath": "pages/repair/repair",
+        "text": "报修"
+      }
+    ]
+  },
+  "permission": {
+    "scope.record": {
+      "desc": "用于语音描述报修问题"
+    },
+    "scope.camera": {
+      "desc": "用于拍摄报修现场照片"
+    }
+  },
+  "requiredPrivateInfos": ["chooseLocation"],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

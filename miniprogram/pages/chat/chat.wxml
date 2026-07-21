@@ -1,0 +1,83 @@
+<view class="chat-container">
+  <view class="chat-header">
+    <text class="chat-title">智能问答</text>
+    <view class="chat-new-btn" bindtap="newChat">
+      <text>新对话</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="msg-list" scroll-into-view="{{scrollToView}}" scroll-with-animation>
+    <view wx:for="{{messages}}" wx:key="index" id="msg-{{index}}" class="msg-item">
+
+      <view wx:if="{{item.role === 'system'}}" class="msg-system">
+        <text>{{item.content}}</text>
+      </view>
+
+      <view wx:elif="{{item.role === 'user'}}" class="msg-row msg-row-user">
+        <view class="msg-bubble msg-bubble-user">
+          <text>{{item.content}}</text>
+        </view>
+      </view>
+
+      <view wx:else class="msg-row msg-row-assistant">
+        <view class="msg-avatar">AI</view>
+        <view class="msg-body">
+          <view class="thinking-status" wx:if="{{item.streaming && !item.content}}">
+            <view class="thinking-dots">
+              <view class="thinking-dot"></view>
+              <view class="thinking-dot"></view>
+              <view class="thinking-dot"></view>
+            </view>
+            <text>AI思考中...</text>
+          </view>
+
+          <view class="msg-bubble msg-bubble-ai" wx:if="{{item.content}}">
+            <text>{{item.content}}</text>
+            <text class="msg-cursor" wx:if="{{item.streaming}}">▋</text>
+          </view>
+
+          <view class="reasoning-wrap" wx:if="{{item.reasoning}}">
+            <view class="reasoning-toggle" data-idx="{{index}}" bindtap="toggleReasoning">
+              <text class="reasoning-label">思考过程</text>
+              <text class="reasoning-arrow {{showReasoning === index ? 'expanded' : ''}}">></text>
+            </view>
+            <view class="reasoning-content" wx:if="{{showReasoning === index}}">
+              <text>{{item.reasoning}}</text>
+            </view>
+          </view>
+
+          <view class="sources-wrap" wx:if="{{item.sources.length > 0}}">
+            <view class="sources-toggle" data-idx="{{index}}" bindtap="toggleSources">
+              <text class="sources-label">回答来源 ({{item.sources.length}})</text>
+              <text class="sources-arrow {{showSources === index ? 'expanded' : ''}}">></text>
+            </view>
+            <view class="sources-list" wx:if="{{showSources === index}}">
+              <view class="source-item" wx:for="{{item.sources}}" wx:key="id" wx:for-item="src" wx:for-index="srcIdx">
+                <view class="source-badge">{{srcIdx + 1}}</view>
+                <view class="source-content">
+                  <text class="source-name">{{src.source}}</text>
+                  <text class="source-snippet">{{src.q}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view id="msg-bottom" style="height: 20rpx;"></view>
+  </scroll-view>
+
+  <view class="chat-input-area safe-bottom">
+    <view class="chat-input-wrap">
+      <input class="chat-input" placeholder="请输入您的问题..."
+             value="{{inputValue}}" bindinput="onInput"
+             confirm-type="send" bindconfirm="onSend"
+             disabled="{{isStreaming || !isConfigured}}" />
+      <view class="chat-send-btn {{(inputValue && !isStreaming && isConfigured) ? 'active' : 'disabled'}}"
+            bindtap="onSend">
+        发送
+      </view>
+    </view>
+  </view>
+</view>
