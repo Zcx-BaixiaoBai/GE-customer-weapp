@@ -1,19 +1,29 @@
 <view class="list-container">
-  <view class="list-empty" wx:if="{{repairList.length === 0}}">
+
+  <view class="list-loading" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view class="list-empty" wx:if="{{!loading && repairList.length === 0}}">
     <view class="empty-icon">!</view>
     <text class="empty-text">暂无报修记录</text>
+    <text class="empty-sub" wx:if="{{!phone}}">请先登录后查看</text>
+    <text class="empty-sub" wx:else>您还没有提交过报修工单</text>
   </view>
-  <view class="repair-list" wx:else>
-    <view class="repair-item" wx:for="{{repairList}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+
+  <view class="repair-list" wx:if="{{!loading && repairList.length > 0}}">
+    <view class="repair-item" wx:for="{{repairList}}" wx:key="id"
+          data-id="{{item.id}}" data-qid="{{item.q_id}}" bindtap="goDetail">
       <view class="item-header">
         <text class="item-type">{{item.type}}</text>
-        <text class="item-status {{item.status === '待处理' ? 'status-pending' : 'status-done'}}">{{item.status}}</text>
+        <text class="item-status {{item.status === '待处理' ? 'status-pending' : item.status === '已完成' ? 'status-done' : 'status-processing'}}">{{item.status}}</text>
       </view>
-      <text class="item-desc">{{item.description}}</text>
+      <text class="item-desc">{{item.content}}</text>
       <view class="item-footer">
-        <text class="item-location">{{item.location}}</text>
+        <text class="item-location">{{item.prj}} | {{item.counter}}</text>
         <text class="item-time">{{item.createTime}}</text>
       </view>
     </view>
   </view>
+
 </view>

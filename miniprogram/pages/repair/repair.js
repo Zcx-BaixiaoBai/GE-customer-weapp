@@ -401,14 +401,21 @@ Page({
           fail: function (err) { reject(err); }
         });
       });
-    }).then(function () {
+    }).then(function (pmsResult) {
       wx.hideLoading();
       self.setData({ submitting: false });
       wx.setStorageSync('user_phone', wo.phone);
+      // PMS返回的q_id作为真实工单号
+      var pmsQid = '';
+      if (pmsResult && pmsResult.data) {
+        try { var d = typeof pmsResult.data === 'string' ? JSON.parse(pmsResult.data) : pmsResult.data; pmsQid = d.q_id || ''; } catch (e) {}
+      }
       var record = {
-        id: 'WX' + Date.now(), type: wo.typeName, content: wo.content,
+        id: pmsQid || ('WX' + Date.now()),
+        q_id: pmsQid,
+        type: wo.typeName, content: wo.content,
         phone: wo.phone, photos: self.data.photos,
-        createTime: new Date().toLocaleString(), status: '已提交'
+        createTime: new Date().toLocaleString(), status: '待处理'
       };
       var list = wx.getStorageSync('repair_list') || [];
       list.unshift(record);

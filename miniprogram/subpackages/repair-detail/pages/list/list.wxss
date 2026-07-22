@@ -3,6 +3,16 @@
   background: #f5f5f5;
   padding: 24rpx;
 }
+
+.list-loading {
+  text-align: center;
+  padding: 80rpx 0;
+}
+.loading-text {
+  font-size: 28rpx;
+  color: #8a95a7;
+}
+
 .list-empty {
   text-align: center;
   padding: 120rpx 0;
@@ -22,6 +32,13 @@
 .empty-text {
   font-size: 30rpx;
   color: #8a95a7;
+  display: block;
+}
+.empty-sub {
+  font-size: 24rpx;
+  color: #c4cbd7;
+  display: block;
+  margin-top: 8rpx;
 }
 
 .repair-item {
@@ -49,6 +66,10 @@
 .status-pending {
   background: #fff7e6;
   color: #f79009;
+}
+.status-processing {
+  background: #e6f0ff;
+  color: #185fa5;
 }
 .status-done {
   background: #e6fffa;

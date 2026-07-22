@@ -55,3 +55,13 @@
 }
 .text-warning { color: #f79009; }
 .text-success { color: #00b578; }
+.text-processing { color: #185fa5; }
+
+.detail-loading {
+  text-align: center;
+  padding: 80rpx 0;
+}
+.loading-text {
+  font-size: 28rpx;
+  color: #8a95a7;
+}
