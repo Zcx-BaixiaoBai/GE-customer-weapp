@@ -1,0 +1,67 @@
+<view class="exam-result-page">
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 刚考完的结果展示 -->
+    <view wx:if="{{submissionId}}" class="result-hero {{passed ? 'passed' : 'failed'}}">
+      <view class="result-circle">
+        <text class="result-score">{{percentage}}</text>
+        <text class="result-unit">分</text>
+      </view>
+      <text class="result-status">{{passed ? '恭喜通过' : '未通过'}}</text>
+      <view wx:if="{{passed}}" class="cert-hint">
+        <text class="cert-hint-text">已颁发证书，可在「个人中心 - 我的证书」查看</text>
+      </view>
+    </view>
+
+    <!-- 统计数据 -->
+    <view wx:if="{{stats}}" class="stats-section">
+      <view class="section-title">考试统计</view>
+      <view class="stats-grid">
+        <view class="stat-item">
+          <text class="stat-value">{{stats.totalSubmissions}}</text>
+          <text class="stat-label">考试次数</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.avgScore}}</text>
+          <text class="stat-label">平均分</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.passRate}}%</text>
+          <text class="stat-label">通过率</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.passedCount}}</text>
+          <text class="stat-label">通过次数</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 最近考试记录 -->
+    <view wx:if="{{recentSubmissions.length > 0}}" class="records-section">
+      <view class="section-title">考试记录</view>
+      <view class="record-item" wx:for="{{recentSubmissions}}" wx:key="id">
+        <view class="record-left">
+          <text class="record-title">{{item.examTitle}}</text>
+          <text class="record-time">{{item.submittedAt}}</text>
+        </view>
+        <view class="record-right {{item.passed ? 'passed' : 'failed'}}">
+          <text class="record-score">{{item.percentage}}分</text>
+          <text class="record-status">{{item.passed ? '通过' : '未通过'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view wx:if="{{submissionId}}" class="action-buttons">
+      <view wx:if="{{passed}}" class="action-btn cert-btn" bindtap="goCertificates">
+        <text>查看证书</text>
+      </view>
+      <view class="action-btn primary" bindtap="retakeExam">
+        <text>返回</text>
+      </view>
+    </view>
+  </block>
+</view>

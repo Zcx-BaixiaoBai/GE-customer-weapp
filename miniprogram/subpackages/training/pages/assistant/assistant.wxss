@@ -1,0 +1,108 @@
+/* AI培训助手 — Apple 设计体系 */
+.assistant-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f5f5f7;
+}
+
+/* 上下文提示条 */
+.context-bar {
+  display: flex; align-items: center; gap: 12rpx;
+  padding: 20rpx 32rpx;
+  background: #ffffff;
+  border-bottom: 1rpx solid #e8e8ed;
+}
+.context-label {
+  font-size: 22rpx; color: #86868b;
+  background: #f5f5f7; padding: 4rpx 16rpx;
+  border-radius: 980rpx;
+}
+.context-title {
+  font-size: 28rpx; color: #1d1d1f; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  flex: 1;
+}
+
+/* 消息列表 */
+.msg-list {
+  flex: 1;
+  padding: 24rpx 32rpx;
+}
+
+.msg-item {
+  display: flex;
+  margin-bottom: 32rpx;
+  align-items: flex-start;
+}
+.msg-user {
+  flex-direction: row-reverse;
+}
+
+.msg-avatar {
+  width: 72rpx; height: 72rpx; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.avatar-ai { background: #0071e3; }
+.avatar-user { background: #f5f5f7; border: 2rpx solid #e8e8ed; }
+.avatar-text { font-size: 24rpx; color: #ffffff; font-weight: 600; }
+.avatar-user .avatar-text { color: #86868b; }
+
+.msg-bubble {
+  max-width: 480rpx;
+  padding: 24rpx 28rpx;
+  border-radius: 24rpx;
+  margin: 0 16rpx;
+}
+.bubble-ai {
+  background: #ffffff;
+  border-top-left-radius: 4rpx;
+}
+.bubble-user {
+  background: #0071e3;
+  border-top-right-radius: 4rpx;
+}
+.msg-content {
+  font-size: 30rpx;
+  line-height: 1.5;
+  word-break: break-all;
+}
+.bubble-ai .msg-content { color: #1d1d1f; }
+.bubble-user .msg-content { color: #ffffff; }
+
+.msg-bottom { height: 40rpx; }
+
+/* 输入栏 */
+.input-bar {
+  display: flex; align-items: center; gap: 16rpx;
+  padding: 16rpx 32rpx;
+  background: #ffffff;
+  border-top: 1rpx solid #e8e8ed;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+}
+.input-field {
+  flex: 1;
+  height: 72rpx;
+  background: #f5f5f7;
+  border-radius: 980rpx;
+  padding: 0 32rpx;
+  font-size: 30rpx;
+  color: #1d1d1f;
+}
+.send-btn {
+  width: 96rpx; height: 72rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: #e8e8ed;
+  border-radius: 980rpx;
+  transition: background 0.3s;
+}
+.send-btn.active {
+  background: #0071e3;
+}
+.send-text {
+  font-size: 28rpx; color: #86868b;
+}
+.send-btn.active .send-text {
+  color: #ffffff;
+}

@@ -75,9 +75,7 @@ Page({
 
     var lastIdx = function () { return self.data.messages.length - 1; };
     var reasoningBuffer = '';
-    var reasoningTimer = null;
     var contentBuffer = '';
-    var contentTimer = null;
 
     var flushReasoning = function () {
       if (reasoningBuffer) {
@@ -101,22 +99,12 @@ Page({
       chatId: this.data.chatId,
       onChunk: function (chunk) {
         contentBuffer += chunk;
-        if (!contentTimer) {
-          contentTimer = setTimeout(function () {
-            contentTimer = null;
-            flushContent();
-          }, 80);
-        }
+        flushContent(); // 立即刷新，不再节流
       },
       onReasoning: function (text) {
         if (!text) return;
         reasoningBuffer += text;
-        if (!reasoningTimer) {
-          reasoningTimer = setTimeout(function () {
-            reasoningTimer = null;
-            flushReasoning();
-          }, 200);
-        }
+        flushReasoning();
       },
       onSources: function (sources) {
         var obj = {};
@@ -124,8 +112,6 @@ Page({
         self.setData(obj);
       },
       onComplete: function () {
-        if (contentTimer) { clearTimeout(contentTimer); contentTimer = null; }
-        if (reasoningTimer) { clearTimeout(reasoningTimer); reasoningTimer = null; }
         flushContent();
         flushReasoning();
         var obj = {};
@@ -135,8 +121,6 @@ Page({
       },
       onError: function (err) {
         console.error('error', err);
-        if (contentTimer) { clearTimeout(contentTimer); contentTimer = null; }
-        if (reasoningTimer) { clearTimeout(reasoningTimer); reasoningTimer = null; }
         var obj = {};
         obj['messages[' + lastIdx() + '].content'] = '抱歉，回答出现问题，请稍后重试。';
         obj['messages[' + lastIdx() + '].streaming'] = false;

@@ -201,7 +201,7 @@ Page({
     var self = this;
     var accumulatedText = this.data.accumulatedText || '';
     wx.request({
-      url: config.API_BASE_URL + '/repair/analyze',
+      url: config.API_BASE_URL + '/repair/analyze-text',
       method: 'POST',
       header: { 'Content-Type': 'application/json' },
       data: { supplementText: text, accumulatedText: accumulatedText },

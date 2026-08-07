@@ -1,0 +1,76 @@
+<view class="training-detail-page">
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 视频播放区 / 图文内容区 -->
+    <view class="content-section">
+      <video
+        wx:if="{{currentLesson && currentLesson.type !== 'article' && currentLesson.videoUrl}}"
+        id="trainingVideo"
+        src="{{currentLesson.videoUrl}}"
+        controls
+        show-fullscreen-btn
+        show-center-play-btn
+        bindtimeupdate="onTimeUpdate"
+        bindended="onVideoEnded"
+        class="training-video"
+      ></video>
+      <view wx:elif="{{currentLesson && currentLesson.type === 'article'}}" class="article-content">
+        <rich-text nodes="{{currentLesson.content}}" class="rich-text-content"></rich-text>
+        <view class="article-read-complete" bindtap="markArticleRead">
+          <text>{{progressMap[currentLesson.id] && progressMap[currentLesson.id].completed ? '已读完' : '标记为已读完'}}</text>
+        </view>
+      </view>
+      <view wx:else class="no-video">
+        <text class="no-video-text">该课时暂无内容</text>
+      </view>
+    </view>
+
+    <!-- 课程信息 -->
+    <view class="course-header">
+      <text class="course-title">{{course.title}}</text>
+      <text class="course-desc">{{course.description}}</text>
+    </view>
+
+    <!-- 课时列表 -->
+    <view class="lesson-list">
+      <view class="section-title">课时列表（{{lessons.length}}）</view>
+      <view class="lesson-item {{index === currentLessonIndex ? 'active' : ''}}"
+            wx:for="{{lessons}}" wx:key="id"
+            data-index="{{index}}" bindtap="selectLesson">
+        <view class="lesson-index">{{index + 1}}</view>
+        <view class="lesson-info">
+          <view style="display:flex;align-items:center;gap:8rpx;margin-bottom:4rpx">
+            <text class="lesson-type-tag {{item.type === 'article' ? 'tag-article' : 'tag-video'}}">{{item.type === 'article' ? '图文' : '视频'}}</text>
+            <text class="lesson-title">{{item.title}}</text>
+          </view>
+          <view class="lesson-meta">
+            <text wx:if="{{progressMap[item.id]}}" class="lesson-progress-text">
+              {{progressMap[item.id].completed ? '已完成' : '进度' + progressMap[item.id].progress + '%'}}
+            </text>
+            <text wx:else class="lesson-progress-text unstarted">未开始</text>
+          </view>
+        </view>
+        <view class="lesson-status">
+          <view wx:if="{{progressMap[item.id] && progressMap[item.id].completed}}" class="completed-icon">
+            <view class="checkmark"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- AI培训助手入口 -->
+    <view class="ai-assistant-btn" bindtap="goAssistant">
+      <view class="ai-assistant-icon">
+        <text class="ai-icon-text">AI</text>
+      </view>
+      <view class="ai-assistant-text">
+        <text class="ai-assistant-title">AI培训助手</text>
+        <text class="ai-assistant-desc">对本课程内容有疑问？问AI</text>
+      </view>
+      <text class="ai-assistant-arrow">›</text>
+    </view>
+  </block>
+</view>

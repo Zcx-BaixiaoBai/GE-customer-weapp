@@ -1,26 +1,49 @@
 <view class="index-container">
-  <!-- 顶部品牌区 -->
+  <!-- 页首：问候 + 日期 + 编辑式大标题 -->
   <view class="hero">
-    <view class="hero-bg"></view>
-    <view class="hero-content">
-      <text class="hero-title">金鹰世界</text>
-      <text class="hero-subtitle">智能物业服务中心</text>
+    <text class="hero-eyebrow anim">{{dateStr}} · GOLDEN EAGLE WORLD</text>
+    <text class="hero-title anim anim-d1">{{greeting}}</text>
+    <text class="hero-sub anim anim-d2">问答、报修、培训，一站式搞定</text>
+  </view>
+
+  <!-- 特色服务：双列等宽卡 -->
+  <view class="featured-grid">
+    <view class="featured-card anim {{index === 0 ? 'anim-d2' : 'anim-d3'}}"
+          wx:for="{{featured}}" wx:key="id"
+          bindtap="onFeatureTap" data-path="{{item.path}}">
+      <view class="chip chip-lg" style="background: {{item.color}}">
+        <view class="icon icon-{{item.id}}">
+          <view class="icon-shape"></view>
+        </view>
+      </view>
+      <text class="featured-title">{{item.title}}</text>
+      <text class="featured-desc">{{item.desc}}</text>
+      <view class="featured-arrow">
+        <text class="featured-arrow-icon">→</text>
+      </view>
     </view>
   </view>
 
-  <!-- 功能入口 -->
-  <view class="features-grid">
-    <view class="feature-card" wx:for="{{features}}" wx:key="id"
+  <!-- 更多服务：iOS 分组列表 -->
+  <view class="section-header anim anim-d4">
+    <text class="section-title">更多服务</text>
+  </view>
+  <view class="group-list anim anim-d5">
+    <view class="group-row {{index === more.length - 1 ? 'last' : ''}}"
+          wx:for="{{more}}" wx:key="id"
           bindtap="onFeatureTap" data-path="{{item.path}}">
-      <view class="feature-icon-wrap" style="background: {{item.color}}15">
-        <view class="feature-icon-inner">
-          <view class="icon icon-{{item.id}}">
-            <view class="icon-shape"></view>
-          </view>
+      <view class="chip chip-sm" style="background: {{item.color}}">
+        <view class="icon icon-sm icon-{{item.id}}">
+          <view class="icon-shape"></view>
         </view>
       </view>
-      <text class="feature-title">{{item.title}}</text>
-      <text class="feature-desc">{{item.desc}}</text>
+      <view class="group-text">
+        <text class="group-title">{{item.title}}</text>
+        <text class="group-desc">{{item.desc}}</text>
+      </view>
+      <text class="chevron">›</text>
     </view>
   </view>
+
+  <view class="footer-tip anim anim-d6">金鹰世界 · 智能物业服务</view>
 </view>

@@ -1,0 +1,40 @@
+<view class="exam-list-page">
+  <view class="page-header anim">
+    <view class="header-text">
+      <text class="page-eyebrow">EXAM</text>
+      <text class="page-title">在线考试</text>
+    </view>
+    <view class="history-link" bindtap="goResults">考试记录</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="sk-row" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="skeleton sk-chip"></view>
+      <view class="sk-lines">
+        <view class="skeleton sk-line" style="width: 55%"></view>
+        <view class="skeleton sk-line" style="width: 75%"></view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:elif="{{exams.length === 0}}" class="empty-wrap anim">
+    <text class="empty-text">暂无可参加的考试</text>
+  </view>
+
+  <view wx:else class="exam-group anim anim-d1">
+    <view class="exam-row {{index === exams.length - 1 ? 'last' : ''}}"
+          wx:for="{{exams}}" wx:key="id"
+          data-id="{{item.id}}" data-title="{{item.title}}" bindtap="goExam">
+      <view class="exam-chip">考</view>
+      <view class="exam-info">
+        <text class="exam-title">{{item.title}}</text>
+        <view class="exam-meta">
+          <text class="meta-item">{{item.questionIds.length}}题</text>
+          <text class="meta-item">· {{item.duration}}分钟</text>
+          <text class="meta-item">· {{item.passScore}}分及格</text>
+        </view>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+  </view>
+</view>

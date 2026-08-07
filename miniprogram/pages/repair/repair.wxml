@@ -108,9 +108,9 @@
   <!-- 阶段4: AI分析中 -->
   <view class="phase-analyzing" wx:if="{{phase === 'analyzing'}}">
     <view class="analyzing-bg"></view>
-    <view class="camera-close" bindtap="goHome">
-      <view class="close-line"></view>
-      <view class="close-line rotate"></view>
+    <view class="camera-close light" bindtap="goHome">
+      <view class="close-line dark"></view>
+      <view class="close-line dark rotate"></view>
     </view>
     <view class="analyzing-wrap">
       <view class="ai-orb">

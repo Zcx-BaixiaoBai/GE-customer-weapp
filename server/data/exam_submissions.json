@@ -1,0 +1,240 @@
+[
+  {
+    "id": "EX1785740073338673",
+    "examId": "EX1785740039002296",
+    "phone": "13800138000",
+    "answers": [
+      {
+        "questionId": "EX1785740026748842",
+        "selected": [
+          0
+        ]
+      }
+    ],
+    "score": 2,
+    "totalScore": 2,
+    "passed": true,
+    "detail": [
+      {
+        "questionId": "EX1785740026748842",
+        "correct": true,
+        "correctAnswer": [
+          0
+        ],
+        "userAnswer": [
+          0
+        ]
+      }
+    ],
+    "submittedAt": "2026-08-03T06:54:33.338Z",
+    "duration": 120
+  },
+  {
+    "id": "EX1785747672428959",
+    "examId": "EX178574127220199",
+    "phone": "17312269780",
+    "answers": [
+      {
+        "questionId": "EX1785741234165583",
+        "selected": [
+          0
+        ]
+      },
+      {
+        "questionId": "EX1785741246425611",
+        "selected": []
+      },
+      {
+        "questionId": "EX1785741260837591",
+        "selected": []
+      }
+    ],
+    "score": 2,
+    "totalScore": 6,
+    "passed": false,
+    "detail": [
+      {
+        "questionId": "EX1785741234165583",
+        "correct": true,
+        "correctAnswer": [
+          0
+        ],
+        "userAnswer": [
+          0
+        ]
+      },
+      {
+        "questionId": "EX1785741246425611",
+        "correct": false,
+        "correctAnswer": [
+          0
+        ],
+        "userAnswer": []
+      },
+      {
+        "questionId": "EX1785741260837591",
+        "correct": false,
+        "correctAnswer": [
+          0,
+          2
+        ],
+        "userAnswer": []
+      }
+    ],
+    "submittedAt": "2026-08-03T09:01:12.428Z",
+    "duration": 900
+  },
+  {
+    "id": "EX1785747691855400",
+    "examId": "EX178574127220199",
+    "phone": "17312269780",
+    "answers": [
+      {
+        "questionId": "EX1785741234165583",
+        "selected": [
+          0
+        ]
+      },
+      {
+        "questionId": "EX1785741246425611",
+        "selected": [
+          1
+        ]
+      },
+      {
+        "questionId": "EX1785741260837591",
+        "selected": [
+          1
+        ]
+      }
+    ],
+    "score": 2,
+    "totalScore": 6,
+    "passed": false,
+    "detail": [
+      {
+        "questionId": "EX1785741234165583",
+        "correct": true,
+        "correctAnswer": [
+          0
+        ],
+        "userAnswer": [
+          0
+        ]
+      },
+      {
+        "questionId": "EX1785741246425611",
+        "correct": false,
+        "correctAnswer": [
+          0
+        ],
+        "userAnswer": [
+          1
+        ]
+      },
+      {
+        "questionId": "EX1785741260837591",
+        "correct": false,
+        "correctAnswer": [
+          0,
+          2
+        ],
+        "userAnswer": [
+          1
+        ]
+      }
+    ],
+    "submittedAt": "2026-08-03T09:01:31.855Z",
+    "duration": 6
+  },
+  {
+    "id": "EX178574799611215",
+    "examId": "EX1785740039002296",
+    "phone": "17312269780",
+    "answers": [
+      {
+        "questionId": "EX1785740026748842",
+        "selected": [
+          0
+        ]
+      }
+    ],
+    "score": 2,
+    "totalScore": 2,
+    "passed": true,
+    "detail": [
+      {
+        "questionId": "EX1785740026748842",
+        "correct": true,
+        "correctAnswer": [
+          0
+        ],
+        "userAnswer": [
+          0
+        ]
+      }
+    ],
+    "submittedAt": "2026-08-03T09:06:36.112Z",
+    "duration": 4
+  },
+  {
+    "id": "EX1785815779088864",
+    "examId": "EX1785740039002296",
+    "phone": "17312269780",
+    "answers": [
+      {
+        "questionId": "EX1785740026748842",
+        "selected": [
+          1
+        ]
+      }
+    ],
+    "score": 0,
+    "totalScore": 2,
+    "passed": false,
+    "detail": [
+      {
+        "questionId": "EX1785740026748842",
+        "correct": false,
+        "correctAnswer": [
+          0
+        ],
+        "userAnswer": [
+          1
+        ]
+      }
+    ],
+    "submittedAt": "2026-08-04T03:56:19.088Z",
+    "duration": 10
+  },
+  {
+    "id": "EX1785815794096299",
+    "examId": "EX1785740039002296",
+    "phone": "17312269780",
+    "answers": [
+      {
+        "questionId": "EX1785740026748842",
+        "selected": [
+          0
+        ]
+      }
+    ],
+    "score": 2,
+    "totalScore": 2,
+    "passed": true,
+    "detail": [
+      {
+        "questionId": "EX1785740026748842",
+        "correct": true,
+        "correctAnswer": [
+          0
+        ],
+        "userAnswer": [
+          0
+        ]
+      }
+    ],
+    "submittedAt": "2026-08-04T03:56:34.096Z",
+    "duration": 4
+  }
+]

@@ -1,0 +1,78 @@
+<view class="exam-take-page">
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 顶部栏 -->
+    <view class="top-bar">
+      <text class="timer {{remainingSeconds < 60 ? 'timer-warning' : ''}}">{{remainingText}}</text>
+      <view class="answer-card-btn" bindtap="toggleAnswerCard">
+        <text class="card-label">答题卡</text>
+      </view>
+    </view>
+
+    <!-- 当前题目 -->
+    <view class="question-section">
+      <view class="question-header">
+        <text class="q-type-tag">
+          {{questions[currentIndex].type === 'single' ? '单选题' : questions[currentIndex].type === 'multiple' ? '多选题' : '判断题'}}
+        </text>
+        <text class="q-num">{{currentIndex + 1}}/{{questions.length}}</text>
+        <text class="q-score">({{questions[currentIndex].score}}分)</text>
+      </view>
+
+      <text class="q-content">{{questions[currentIndex].content}}</text>
+
+      <view class="option-list">
+        <!-- 用 selMatrix[currentIndex][index] 布尔值直接判断，无需indexOf/WXS -->
+        <view 
+          wx:for="{{questions[currentIndex].options}}" 
+          wx:key="index"
+          class="option-item {{selMatrix[currentIndex][index] ? 'selected' : ''}}"
+          data-opt="{{index}}" 
+          bindtap="selectOption">
+          <view class="option-marker {{selMatrix[currentIndex][index] ? 'marker-selected' : ''}}">
+            <text class="marker-text">{{index === 0 ? 'A' : index === 1 ? 'B' : index === 2 ? 'C' : index === 3 ? 'D' : index === 4 ? 'E' : (index + 1)}}</text>
+          </view>
+          <text class="option-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部导航 -->
+    <view class="bottom-bar">
+      <view class="nav-btn prev-btn {{currentIndex === 0 ? 'disabled' : ''}}" bindtap="goPrev">
+        <text>上一题</text>
+      </view>
+      <view wx:if="{{currentIndex < questions.length - 1}}" class="nav-btn next-btn" bindtap="goNext">
+        <text>下一题</text>
+      </view>
+      <view wx:else class="nav-btn submit-btn" bindtap="submitExam">
+        <text>{{submitting ? '提交中...' : '提交考试'}}</text>
+      </view>
+    </view>
+
+    <!-- 答题卡弹窗 -->
+    <view wx:if="{{showAnswerCard}}" class="answer-card-mask" bindtap="toggleAnswerCard">
+      <view class="answer-card-panel" catchtap="">
+        <view class="panel-title">答题卡</view>
+        <view class="card-grid">
+          <!-- 判断每题是否已答：遍历selMatrix[index]看有没有true -->
+          <view 
+            wx:for="{{questions}}" 
+            wx:key="id"
+            class="card-item {{selMatrix[index][0] || selMatrix[index][1] || selMatrix[index][2] || selMatrix[index][3] || selMatrix[index][4] || selMatrix[index][5] || selMatrix[index][6] || selMatrix[index][7] ? 'answered' : ''}}"
+            data-index="{{index}}" 
+            bindtap="jumpTo">
+            <text>{{index + 1}}</text>
+          </view>
+        </view>
+        <view class="card-legend">
+          <view class="legend-item"><view class="legend-dot answered"></view><text>已答</text></view>
+          <view class="legend-item"><view class="legend-dot"></view><text>未答</text></view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

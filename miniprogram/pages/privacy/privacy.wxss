@@ -1,0 +1,76 @@
+/* 隐私政策页 - Apple 风格 */
+.privacy-page {
+  background: #f5f5f7;
+  min-height: 100vh;
+  padding: 0 40rpx 80rpx;
+}
+
+.privacy-header {
+  padding: 88rpx 0 48rpx;
+}
+
+.eyebrow {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #86868b;
+  letter-spacing: 4rpx;
+  text-transform: uppercase;
+  margin-bottom: 16rpx;
+}
+
+.title {
+  font-size: 52rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+  letter-spacing: -1rpx;
+  line-height: 1.1;
+  margin-bottom: 12rpx;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: #86868b;
+}
+
+.privacy-content {
+  background: #ffffff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.section {
+  padding: 40rpx 32rpx;
+  border-bottom: 0.5rpx solid #d2d2d7;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 16rpx;
+  line-height: 1.3;
+}
+
+.section-body {
+  font-size: 28rpx;
+  color: #6e6e73;
+  line-height: 1.6;
+}
+
+.list-item {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 28rpx;
+  color: #6e6e73;
+  line-height: 1.6;
+}
+
+.note {
+  font-size: 26rpx;
+  color: #86868b;
+  line-height: 1.6;
+}

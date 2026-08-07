@@ -68,7 +68,7 @@
     <view id="msg-bottom" style="height: 20rpx;"></view>
   </scroll-view>
 
-  <view class="chat-input-area safe-bottom">
+  <view class="chat-input-area">
     <view class="chat-input-wrap">
       <input class="chat-input" placeholder="请输入您的问题..."
              value="{{inputValue}}" bindinput="onInput"

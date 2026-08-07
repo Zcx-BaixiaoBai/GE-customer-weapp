@@ -1,0 +1,52 @@
+<view class="cert-page">
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view wx:elif="{{certificates.length === 0}}" class="empty-wrap">
+    <view class="empty-icon">
+      <view class="empty-icon-doc"></view>
+      <view class="empty-icon-line l1"></view>
+      <view class="empty-icon-line l2"></view>
+      <view class="empty-icon-seal"></view>
+    </view>
+    <text class="empty-text">暂无证书</text>
+    <text class="empty-sub">通过考试后将自动获得证书</text>
+  </view>
+
+  <view wx:else class="cert-list">
+    <view class="cert-card" wx:for="{{certificates}}" wx:key="id">
+      <!-- 顶部条 -->
+      <view class="cert-top-bar">
+        <view class="cert-badge">
+          <view class="cert-badge-inner"></view>
+        </view>
+        <text class="cert-id">{{item.id}}</text>
+        <view class="cert-pass-seal">
+          <view class="seal-outer">
+            <view class="seal-inner">
+              <text class="seal-text">通过</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 正文 -->
+      <view class="cert-body">
+        <text class="cert-exam-title">{{item.examTitle}}</text>
+
+        <view class="cert-info-row">
+          <text class="cert-info-label">成绩</text>
+          <text class="cert-score-value">{{item.percentage}}分</text>
+        </view>
+
+        <view class="cert-divider"></view>
+
+        <view class="cert-info-row">
+          <text class="cert-info-label">颁发日期</text>
+          <text class="cert-date-value">{{item.issuedAt}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

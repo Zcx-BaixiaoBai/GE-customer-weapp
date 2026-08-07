@@ -1,0 +1,110 @@
+.exam-result-page {
+  min-height: 100vh;
+  background: #f5f5f7;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.loading-wrap { display: flex; align-items: center; justify-content: center; height: 400rpx; }
+.loading-text { font-size: 26rpx; color: #86868b; }
+
+/* 结果区：纯色背景，禁渐变 */
+.result-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0 60rpx;
+}
+.result-circle {
+  width: 240rpx;
+  height: 240rpx;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: 32rpx;
+}
+.result-score {
+  font-size: 88rpx;
+  font-weight: 600;
+  line-height: 240rpx;
+  letter-spacing: -1rpx;
+  color: #1d1d1f;
+}
+.result-hero.passed .result-score { color: #34c759; }
+.result-hero.failed .result-score { color: #ff3b30; }
+.result-unit { font-size: 32rpx; color: #86868b; margin-left: 8rpx; }
+.result-status { font-size: 36rpx; font-weight: 600; line-height: 1.2; }
+.result-hero.passed .result-status { color: #34c759; }
+.result-hero.failed .result-status { color: #ff3b30; }
+
+/* 证书提示 */
+.cert-hint {
+  margin-top: 24rpx;
+  background: rgba(175, 82, 222, 0.08);
+  padding: 16rpx 32rpx;
+  border-radius: 980rpx;
+}
+.cert-hint-text {
+  font-size: 24rpx;
+  color: #af52de;
+}
+
+/* 卡片：白底、24rpx 圆角、无描边、无阴影 */
+.stats-section {
+  background: #ffffff;
+  margin: 24rpx 32rpx;
+  border-radius: 24rpx;
+  padding: 36rpx;
+}
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #1d1d1f;
+  margin-bottom: 24rpx;
+}
+.stats-grid { display: flex; justify-content: space-around; }
+.stat-item { display: flex; flex-direction: column; align-items: center; }
+.stat-value { font-size: 48rpx; font-weight: 600; letter-spacing: -0.5rpx; color: #1d1d1f; }
+.stat-label { font-size: 22rpx; color: #86868b; margin-top: 8rpx; }
+
+.records-section {
+  background: #ffffff;
+  margin: 24rpx 32rpx;
+  border-radius: 24rpx;
+  padding: 36rpx;
+}
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #d2d2d7;
+}
+.record-item:last-child { border-bottom: none; }
+.record-left { display: flex; flex-direction: column; gap: 8rpx; }
+.record-title { font-size: 30rpx; color: #1d1d1f; }
+.record-time { font-size: 22rpx; color: #86868b; }
+.record-right { display: flex; flex-direction: column; align-items: flex-end; }
+.record-right.passed .record-score { color: #34c759; }
+.record-right.passed .record-status { color: #34c759; }
+.record-right.failed .record-score { color: #ff3b30; }
+.record-right.failed .record-status { color: #ff3b30; }
+.record-score { font-size: 36rpx; font-weight: 600; }
+.record-status { font-size: 22rpx; }
+
+.action-buttons { padding: 32rpx; display: flex; gap: 24rpx; }
+/* 主按钮：胶囊 96rpx */
+.action-btn {
+  flex: 1;
+  height: 96rpx;
+  border-radius: 980rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+}
+.action-btn.primary { background: #0071e3; color: #ffffff; }
+.action-btn.primary:active { background: #005bb8; }
+.action-btn.cert-btn { background: #ffffff; color: #af52de; border: 2rpx solid #af52de; }

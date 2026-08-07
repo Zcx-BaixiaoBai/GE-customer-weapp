@@ -1,17 +1,26 @@
 <view class="list-container">
 
-  <view class="list-loading" wx:if="{{loading}}">
-    <text class="loading-text">加载中...</text>
+  <view class="page-header anim">
+    <text class="page-eyebrow">WORK ORDERS</text>
+    <text class="page-title">我的报修</text>
   </view>
 
-  <view class="list-empty" wx:if="{{!loading && repairList.length === 0}}">
+  <view class="list-loading" wx:if="{{loading}}">
+    <view class="sk-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="skeleton sk-line" style="width: 40%"></view>
+      <view class="skeleton sk-line" style="width: 90%"></view>
+      <view class="skeleton sk-line" style="width: 65%"></view>
+    </view>
+  </view>
+
+  <view class="list-empty anim" wx:if="{{!loading && repairList.length === 0}}">
     <view class="empty-icon">!</view>
     <text class="empty-text">暂无报修记录</text>
     <text class="empty-sub" wx:if="{{!phone}}">请先登录后查看</text>
     <text class="empty-sub" wx:else>您还没有提交过报修工单</text>
   </view>
 
-  <view class="repair-list" wx:if="{{!loading && repairList.length > 0}}">
+  <view class="repair-list anim anim-d1" wx:if="{{!loading && repairList.length > 0}}">
     <view class="repair-item" wx:for="{{repairList}}" wx:key="id"
           data-id="{{item.id}}" data-qid="{{item.q_id}}" bindtap="goDetail">
       <view class="item-header">

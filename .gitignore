@@ -34,3 +34,12 @@ npm-debug.log*
 # OS files
 desktop.ini
 nul
+
+# Runtime cache & temp
+server/.npm-cache/
+server/.dockerenv
+server/logs/
+server/uploads/
+
+# Production env (keep .env.example only)
+server/.env.production

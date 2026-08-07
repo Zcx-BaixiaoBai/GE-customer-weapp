@@ -1,0 +1,28 @@
+[
+  {
+    "id": "EX1785740039002296",
+    "title": "fire-exam",
+    "description": "",
+    "questionIds": [
+      "EX1785740026748842"
+    ],
+    "duration": 30,
+    "passScore": 60,
+    "status": "published",
+    "createdAt": "2026-08-03T06:53:59.002Z"
+  },
+  {
+    "id": "EX178574127220199",
+    "title": "fire-safety-exam",
+    "description": "fire safety knowledge test",
+    "questionIds": [
+      "EX1785741234165583",
+      "EX1785741246425611",
+      "EX1785741260837591"
+    ],
+    "duration": 15,
+    "passScore": 60,
+    "status": "published",
+    "createdAt": "2026-08-03T07:14:32.201Z"
+  }
+]

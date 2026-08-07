@@ -26,13 +26,15 @@ export class UploadController {
           cb(null, `${type}/${uniqueName}`);
         },
       }),
-      limits: { fileSize: 30 * 1024 * 1024 },
+      limits: { fileSize: 200 * 1024 * 1024 },
       fileFilter: (req, file, cb) => {
         const type = req.body.type || 'image';
         const ext = extname(file.originalname).slice(1).toLowerCase();
-        const allowed = type === 'image'
-          ? ['jpg', 'jpeg', 'png', 'webp', 'heic']
-          : ['mp3', 'wav', 'amr', 'm4a', 'aac'];
+        var allowed;
+        if (type === 'image') allowed = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'gif'];
+        else if (type === 'video') allowed = ['mp4', 'mov', 'avi', 'mkv', 'flv', 'wmv'];
+        else if (type === 'audio') allowed = ['mp3', 'wav', 'amr', 'm4a', 'aac'];
+        else allowed = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'mp4', 'mp3'];
         if (allowed.includes(ext)) {
           cb(null, true);
         } else {

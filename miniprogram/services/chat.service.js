@@ -56,19 +56,22 @@ function chatWithFastGPT(opts) {
     url: config.FASTGPT_BASE_URL + '/chat/completions',
     method: 'POST',
     enableChunked: true,
+    timeout: 30000,
     header: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + config.FASTGPT_API_KEY
     },
     data: requestData,
     success: function (res) {
+      // chunked 模式下，如果整个响应已结束但仍未收到有效SSE数据
+      // 说明可能认证失败或其他错误
       if (res.statusCode !== 200) {
-        onError({ message: 'FastGPT ' + res.statusCode });
-        onComplete();
+        onError({ message: 'FastGPT返回 ' + res.statusCode + '，请检查API Key配置' });
       }
+      onComplete();
     },
     fail: function (err) {
-      onError(err);
+      onError({ message: err.errMsg || '网络错误' });
       onComplete();
     }
   });
@@ -122,8 +125,12 @@ function chatWithFastGPT(opts) {
           if (choices && choices.length > 0) {
             var delta = choices[0].delta;
             if (delta) {
-              if (delta.content) onChunk(delta.content);
-              if (delta.reasoning_content) onReasoning(delta.reasoning_content);
+              if (delta.content != null && delta.content !== '') {
+                onChunk(delta.content);
+              }
+              if (delta.reasoning_content != null && delta.reasoning_content !== '') {
+                onReasoning(delta.reasoning_content);
+              }
             }
             if (choices[0].quote) {
               onSources(choices[0].quote);

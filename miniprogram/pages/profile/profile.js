@@ -1,4 +1,4 @@
-var auth = require('../../../../utils/auth');
+var auth = require('../../utils/auth');
 
 Page({
   data: {
@@ -108,6 +108,14 @@ Page({
 
   goRepairList: function () {
     wx.navigateTo({ url: '/subpackages/repair-detail/pages/list/list' });
+  },
+
+  goCertificates: function () {
+    wx.navigateTo({ url: '/subpackages/exam/pages/certificates/certificates' });
+  },
+
+  goPrivacy: function () {
+    wx.navigateTo({ url: '/pages/privacy/privacy' });
   },
 
   onLogout: function () {

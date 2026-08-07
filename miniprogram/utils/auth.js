@@ -63,7 +63,7 @@ function getPhoneFromWechat(e) {
       timeout: 15000,
       success: function (r) {
         console.log('[auth] phone response:', r.statusCode, JSON.stringify(r.data).substring(0, 200));
-        if (r.statusCode === 200 && r.data && r.data.phoneNumber) {
+        if (r.statusCode >= 200 && r.statusCode < 300 && r.data && r.data.phoneNumber) {
           wx.setStorageSync('user_phone', r.data.phoneNumber);
           wx.setStorageSync('user_pure_phone', r.data.purePhoneNumber);
           resolve(r.data.phoneNumber);

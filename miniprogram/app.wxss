@@ -1,89 +1,233 @@
-/* 全局样式 */
+/* ============================================
+   全局样式 — Apple 设计体系（见项目根 DESIGN.md）
+   唯一强调色 #0071e3，只给可交互元素
+   ============================================ */
+
 page {
-  background-color: #f5f5f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 28rpx;
-  color: #1a1a2e;
-  line-height: 1.6;
+  background-color: #f5f5f7;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 30rpx;
+  color: #1d1d1f;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* 通用容器 */
 .container {
-  padding: 24rpx;
+  padding: 32rpx;
   box-sizing: border-box;
 }
 
-/* 卡片 */
+/* 卡片：白底、无描边、无阴影（浮层才用阴影） */
 .card {
   background: #ffffff;
-  border-radius: 16rpx;
-  padding: 32rpx;
+  border-radius: 24rpx;
+  padding: 36rpx;
   margin-bottom: 24rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
 }
 
-/* 按钮 */
+.card-elevated {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 36rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 6rpx 60rpx rgba(0, 0, 0, 0.12);
+}
+
+/* 按钮：胶囊 980rpx */
 .btn-primary {
-  background: #3370ff;
+  background: #0071e3;
   color: #ffffff;
   border: none;
-  border-radius: 12rpx;
-  padding: 24rpx 0;
+  border-radius: 980rpx;
+  height: 96rpx;
+  line-height: 96rpx;
   text-align: center;
   font-size: 32rpx;
-  font-weight: 500;
+  font-weight: 400;
+}
+
+.btn-primary:active {
+  background: #005bb8;
 }
 
 .btn-primary[disabled] {
-  background: #c4cbd7;
+  background: #e8e8ed;
+  color: #86868b;
 }
 
-.btn-secondary {
-  background: #f0f4ff;
-  color: #3370ff;
+.btn-dark {
+  background: #1d1d1f;
+  color: #ffffff;
   border: none;
-  border-radius: 12rpx;
-  padding: 24rpx 0;
+  border-radius: 980rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 400;
+}
+
+.btn-dark:active {
+  background: #000000;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #0066cc;
+  border: 1rpx solid #0066cc;
+  border-radius: 980rpx;
+  height: 96rpx;
+  line-height: 94rpx;
   text-align: center;
   font-size: 32rpx;
 }
 
-/* 标题 */
-.title-lg {
-  font-size: 40rpx;
+.btn-outline:active {
+  background: rgba(0, 113, 227, 0.06);
+}
+
+/* 文字链接 */
+.link {
+  color: #0066cc;
+  font-size: 26rpx;
+}
+
+/* 标题层级 */
+.title-hero {
+  font-size: 64rpx;
   font-weight: 600;
-  color: #1a1a2e;
+  line-height: 1.1;
+  letter-spacing: -1rpx;
+  color: #1d1d1f;
+}
+
+.title-lg {
+  font-size: 48rpx;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.5rpx;
+  color: #1d1d1f;
+}
+
+.title-section {
+  font-size: 36rpx;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1d1d1f;
 }
 
 .title-md {
   font-size: 32rpx;
-  font-weight: 500;
-  color: #1a1a2e;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #1d1d1f;
 }
 
 /* 文字颜色 */
-.text-primary { color: #3370ff; }
-.text-secondary { color: #667085; }
-.text-danger { color: #f04438; }
-.text-success { color: #12b76a; }
-.text-warning { color: #f79009; }
+.text-primary { color: #1d1d1f; }
+.text-secondary { color: #6e6e73; }
+.text-tertiary { color: #86868b; }
+.text-link { color: #0066cc; }
+.text-accent { color: #0071e3; }
+.text-danger { color: #ff3b30; }
+.text-success { color: #34c759; }
+.text-warning { color: #ff9500; }
+
+/* 语义色浅底（状态徽标用） */
+.bg-success-light { background: rgba(52, 199, 89, 0.1); }
+.bg-warning-light { background: rgba(255, 149, 0, 0.1); }
+.bg-danger-light { background: rgba(255, 59, 48, 0.1); }
+.bg-accent-light { background: rgba(0, 113, 227, 0.08); }
+
+/* 状态徽标：胶囊 */
+.badge {
+  display: inline-block;
+  font-size: 22rpx;
+  line-height: 1;
+  padding: 10rpx 20rpx;
+  border-radius: 980rpx;
+}
+
+/* 输入 */
+.input {
+  background: #f5f5f7;
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  font-size: 30rpx;
+  color: #1d1d1f;
+  box-sizing: border-box;
+}
+
+.input-placeholder {
+  color: #86868b;
+}
+
+/* 细分隔线（能不用就不用） */
+.hairline {
+  height: 1rpx;
+  background: #d2d2d7;
+  transform: scaleY(0.5);
+}
 
 /* flex布局 */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 .flex-center { align-items: center; justify-content: center; }
 .flex-between { justify-content: space-between; }
+.flex-align-center { align-items: center; }
 .flex-1 { flex: 1; }
 
 /* 间距 */
+.mt-xs { margin-top: 8rpx; }
 .mt-sm { margin-top: 16rpx; }
 .mt-md { margin-top: 24rpx; }
 .mt-lg { margin-top: 32rpx; }
+.mt-xl { margin-top: 48rpx; }
 .mb-sm { margin-bottom: 16rpx; }
 .mb-md { margin-bottom: 24rpx; }
-.p-md { padding: 24rpx; }
+.mb-lg { margin-bottom: 32rpx; }
+.p-md { padding: 32rpx; }
 
 /* 安全区 */
 .safe-bottom {
-  padding-bottom: env(safe-bottom-padding);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ========== 全局动效令牌（见 DESIGN.md 5.5） ========== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -400rpx 0; }
+  100% { background-position: 400rpx 0; }
+}
+
+/* 交错入场：元素加 .anim + 延迟类 */
+.anim {
+  opacity: 0;
+  animation: fadeUp 0.45s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+.anim-d1 { animation-delay: 0.05s; }
+.anim-d2 { animation-delay: 0.12s; }
+.anim-d3 { animation-delay: 0.19s; }
+.anim-d4 { animation-delay: 0.26s; }
+.anim-d5 { animation-delay: 0.33s; }
+.anim-d6 { animation-delay: 0.40s; }
+
+/* 骨架屏：灰块 + 扫光（功能性扫光，非装饰渐变） */
+.skeleton {
+  background: #e8e8ed;
+  background-image: linear-gradient(90deg, #e8e8ed 0%, #f5f5f7 50%, #e8e8ed 100%);
+  background-size: 400rpx 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 12rpx;
 }

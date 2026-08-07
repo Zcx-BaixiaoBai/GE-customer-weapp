@@ -1,0 +1,84 @@
+# 金鹰世界物业小程序 — 完整部署编排
+# 启动: docker-compose up -d
+# 停止: docker-compose down
+# 日志: docker-compose logs -f server
+
+version: '3.8'
+
+services:
+  # ========== MySQL ==========
+  mysql:
+    image: mysql:8.0
+    container_name: jinying-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-jinying_root_2026}
+      MYSQL_DATABASE: jinying_property
+      MYSQL_USER: jinying
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-jinying_db_2026}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql/migrations.sql:/docker-entrypoint-initdb.d/01-migrations.sql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========== Redis ==========
+  redis:
+    image: redis:7-alpine
+    container_name: jinying-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ========== NestJS 后端 ==========
+  server:
+    build: .
+    container_name: jinying-server
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env.production
+    environment:
+      - DB_HOST=mysql
+      - REDIS_HOST=redis
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+
+  # ========== Nginx 反向代理 ==========
+  nginx:
+    image: nginx:alpine
+    container_name: jinying-nginx
+    restart: always
+    depends_on:
+      - server
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./uploads:/var/www/uploads:ro
+
+volumes:
+  mysql_data:
+  redis_data:

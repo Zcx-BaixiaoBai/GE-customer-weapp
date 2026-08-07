@@ -1,0 +1,129 @@
+/* 证书页面 — Apple 设计体系 */
+.cert-page {
+  min-height: 100vh;
+  background: #f5f5f7;
+  padding: 24rpx 32rpx 48rpx;
+}
+
+.loading-wrap {
+  display: flex; align-items: center; justify-content: center;
+  padding: 200rpx 0;
+}
+.loading-text { font-size: 30rpx; color: #86868b; }
+
+/* ========== 空状态：CSS绘制证书图标 ========== */
+.empty-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 200rpx 0;
+}
+.empty-icon {
+  position: relative;
+  width: 120rpx; height: 160rpx;
+  margin-bottom: 40rpx;
+}
+.empty-icon-doc {
+  width: 120rpx; height: 160rpx;
+  background: #ffffff;
+  border-radius: 12rpx;
+  border: 4rpx solid #d2d2d7;
+}
+.empty-icon-line {
+  position: absolute;
+  left: 24rpx;
+  height: 4rpx;
+  background: #d2d2d7;
+  border-radius: 2rpx;
+}
+.empty-icon-line.l1 { top: 56rpx; width: 72rpx; }
+.empty-icon-line.l2 { top: 72rpx; width: 56rpx; }
+.empty-icon-seal {
+  position: absolute;
+  right: -8rpx; bottom: -8rpx;
+  width: 48rpx; height: 48rpx;
+  border-radius: 50%;
+  border: 4rpx solid #0071e3;
+  background: #ffffff;
+  opacity: 0.6;
+}
+.empty-text { font-size: 32rpx; color: #1d1d1f; font-weight: 600; margin-bottom: 12rpx; }
+.empty-sub { font-size: 26rpx; color: #86868b; }
+
+/* ========== 证书卡片 ========== */
+.cert-list { display: flex; flex-direction: column; gap: 24rpx; }
+
+.cert-card {
+  background: #ffffff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+/* 顶部条：badge + 编号 + 通过印章，flex 布局不重叠 */
+.cert-top-bar {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 32rpx 0;
+  position: relative;
+}
+.cert-badge {
+  width: 56rpx; height: 56rpx; border-radius: 50%;
+  background: #0071e3;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-right: 16rpx;
+}
+.cert-badge-inner {
+  width: 24rpx; height: 24rpx; border-radius: 50%;
+  background: #ffffff;
+}
+.cert-id {
+  font-size: 22rpx; color: #86868b;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 通过印章放右上角，absolute 定位不挤占布局 */
+.cert-pass-seal {
+  position: absolute;
+  right: 32rpx; top: 24rpx;
+}
+.seal-outer {
+  width: 88rpx; height: 88rpx; border-radius: 50%;
+  border: 3rpx solid #0071e3;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.7;
+}
+.seal-inner {
+  width: 72rpx; height: 72rpx; border-radius: 50%;
+  border: 2rpx solid #0071e3;
+  display: flex; align-items: center; justify-content: center;
+}
+.seal-text { font-size: 24rpx; color: #0071e3; font-weight: 600; }
+
+/* 正文区 */
+.cert-body {
+  padding: 32rpx 32rpx 36rpx;
+}
+.cert-exam-title {
+  font-size: 34rpx; font-weight: 600; color: #1d1d1f;
+  line-height: 1.3;
+  display: block;
+  margin-bottom: 32rpx;
+  /* 留出印章空间，避免与印章重叠 */
+  padding-right: 100rpx;
+}
+
+.cert-info-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16rpx 0;
+}
+.cert-info-label { font-size: 28rpx; color: #6e6e73; }
+.cert-score-value { font-size: 32rpx; color: #34c759; font-weight: 600; }
+.cert-date-value { font-size: 28rpx; color: #1d1d1f; }
+
+.cert-divider {
+  height: 1rpx;
+  background: #e8e8ed;
+  margin: 0;
+}

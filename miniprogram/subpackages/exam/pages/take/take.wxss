@@ -1,0 +1,161 @@
+.exam-take-page {
+  min-height: 100vh;
+  background: #f5f5f7;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-wrap { display: flex; align-items: center; justify-content: center; height: 400rpx; }
+.loading-text { font-size: 26rpx; color: #86868b; }
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 32rpx;
+  background: #ffffff;
+  border-bottom: 1rpx solid #d2d2d7;
+}
+.timer {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+  font-variant-numeric: tabular-nums;
+}
+.timer-warning { color: #ff9500; }
+/* 描边胶囊按钮 */
+.answer-card-btn {
+  padding: 12rpx 32rpx;
+  border: 1rpx solid #0066cc;
+  border-radius: 980rpx;
+}
+.answer-card-btn:active { background: rgba(0, 113, 227, 0.06); }
+.card-label { font-size: 26rpx; color: #0066cc; }
+
+.question-section {
+  flex: 1;
+  padding: 32rpx;
+}
+.question-header { display: flex; align-items: center; gap: 16rpx; margin-bottom: 32rpx; }
+/* 题型徽标：浅蓝底 + 强调色文字，胶囊 */
+.q-type-tag {
+  background: rgba(0, 113, 227, 0.08);
+  color: #0071e3;
+  font-size: 22rpx;
+  line-height: 1;
+  padding: 10rpx 20rpx;
+  border-radius: 980rpx;
+}
+.q-num { font-size: 30rpx; font-weight: 600; color: #1d1d1f; }
+.q-score { font-size: 26rpx; color: #86868b; }
+
+.q-content {
+  font-size: 34rpx;
+  color: #1d1d1f;
+  line-height: 1.6;
+  display: block;
+  margin-bottom: 40rpx;
+}
+
+.option-list { display: flex; flex-direction: column; gap: 24rpx; }
+/* 选项：默认白卡、无描边 */
+.option-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  background: #ffffff;
+  border: 1rpx solid transparent;
+  border-radius: 20rpx;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+.option-item:active { opacity: 0.85; }
+/* 选中态：浅蓝底 + 细描边 */
+.option-item.selected {
+  background: rgba(0, 113, 227, 0.08);
+  border-color: #0071e3;
+}
+.option-marker {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  border: 1rpx solid #d2d2d7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.option-item.selected .option-marker,
+.option-marker.marker-selected {
+  background: #0071e3;
+  border-color: #0071e3;
+}
+.marker-text { font-size: 26rpx; color: #6e6e73; }
+.option-item.selected .marker-text,
+.option-marker.marker-selected .marker-text { color: #ffffff; }
+.option-text { font-size: 30rpx; color: #1d1d1f; flex: 1; }
+
+.bottom-bar {
+  display: flex;
+  padding: 24rpx 32rpx;
+  gap: 24rpx;
+  background: #ffffff;
+  border-top: 1rpx solid #d2d2d7;
+}
+/* 导航按钮：胶囊 96rpx */
+.nav-btn {
+  flex: 1;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 980rpx;
+  font-size: 30rpx;
+}
+.prev-btn { background: #f5f5f7; color: #1d1d1f; }
+.prev-btn:active { background: #e8e8ed; }
+.prev-btn.disabled { background: #e8e8ed; color: #86868b; }
+.next-btn { background: #0071e3; color: #ffffff; }
+.next-btn:active { background: #005bb8; }
+.submit-btn { background: #0071e3; color: #ffffff; }
+.submit-btn:active { background: #005bb8; }
+
+.answer-card-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 100;
+}
+.answer-card-panel {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 40rpx 32rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+.panel-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #1d1d1f;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+.card-grid { display: flex; flex-wrap: wrap; gap: 20rpx; justify-content: center; }
+.card-item {
+  width: 80rpx; height: 80rpx;
+  border-radius: 50%;
+  background: #f5f5f7;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30rpx; color: #6e6e73;
+}
+.card-item.answered { background: #0071e3; color: #ffffff; }
+
+.card-legend { display: flex; justify-content: center; gap: 40rpx; margin-top: 32rpx; }
+.legend-item { display: flex; align-items: center; gap: 8rpx; font-size: 22rpx; color: #86868b; }
+.legend-dot { width: 24rpx; height: 24rpx; border-radius: 50%; background: #f5f5f7; }
+.legend-dot.answered { background: #0071e3; }

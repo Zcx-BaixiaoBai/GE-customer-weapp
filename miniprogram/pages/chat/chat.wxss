@@ -1,8 +1,9 @@
+/* 智能问答 — Apple 设计体系 */
 .chat-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #f5f5f5;
+  background: #f5f5f7;
 }
 
 .chat-header {
@@ -10,30 +11,34 @@
   justify-content: space-between;
   align-items: center;
   padding: 20rpx 32rpx;
-  background: #ffffff;
-  border-bottom: 1rpx solid #e8ebf0;
+  background: #f5f5f7;
   flex-shrink: 0;
 }
 .chat-title {
-  font-size: 34rpx;
+  font-size: 36rpx;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #1d1d1f;
+  letter-spacing: -0.5rpx;
 }
 .chat-new-btn {
   font-size: 26rpx;
-  color: #3370ff;
-  padding: 8rpx 24rpx;
-  border: 1rpx solid #3370ff;
-  border-radius: 8rpx;
+  color: #0066cc;
+  padding: 10rpx 28rpx;
+  border: 1rpx solid #0066cc;
+  border-radius: 980rpx;
+}
+.chat-new-btn:active {
+  background: rgba(0, 113, 227, 0.06);
 }
 
 .msg-list {
   flex: 1;
-  padding: 24rpx;
+  padding: 24rpx 32rpx;
   box-sizing: border-box;
 }
 .msg-item {
-  margin-bottom: 32rpx;
+  margin-bottom: 36rpx;
+  animation: fadeUp 0.3s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .msg-system {
@@ -41,11 +46,11 @@
   padding: 24rpx;
 }
 .msg-system text {
-  font-size: 26rpx;
-  color: #8a95a7;
-  background: #f0f1f6;
-  padding: 12rpx 32rpx;
-  border-radius: 12rpx;
+  font-size: 22rpx;
+  color: #86868b;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 12rpx 28rpx;
+  border-radius: 980rpx;
 }
 
 .msg-row {
@@ -59,16 +64,17 @@
   justify-content: flex-start;
 }
 
+/* AI 头像：纯黑圆，禁渐变 */
 .msg-avatar {
   width: 64rpx;
   height: 64rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3370ff, #6366f1);
+  background: #1d1d1f;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24rpx;
+  font-size: 22rpx;
   font-weight: 600;
   margin-right: 16rpx;
   flex-shrink: 0;
@@ -81,31 +87,32 @@
   max-width: 78%;
 }
 
+/* 用户气泡：Apple 蓝 */
 .msg-bubble-user {
   max-width: 100%;
-  background: #3370ff;
+  background: #0071e3;
   color: #ffffff;
   padding: 20rpx 28rpx;
-  border-radius: 20rpx 20rpx 4rpx 20rpx;
+  border-radius: 28rpx 28rpx 8rpx 28rpx;
   font-size: 30rpx;
   line-height: 1.5;
   word-break: break-word;
 }
 
+/* AI 气泡：白底无阴影 */
 .msg-bubble-ai {
   max-width: 100%;
   background: #ffffff;
-  color: #1a1a2e;
+  color: #1d1d1f;
   padding: 20rpx 28rpx;
-  border-radius: 4rpx 20rpx 20rpx 20rpx;
+  border-radius: 8rpx 28rpx 28rpx 28rpx;
   font-size: 30rpx;
   line-height: 1.6;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
   word-break: break-word;
 }
 .msg-cursor {
   display: inline;
-  color: #3370ff;
+  color: #0071e3;
   animation: blink 1s infinite;
 }
 @keyframes blink {
@@ -118,17 +125,17 @@
   align-items: center;
   gap: 16rpx;
   padding: 20rpx 28rpx;
-  background: #f0f1f6;
-  border-radius: 4rpx 20rpx 20rpx 20rpx;
+  background: #ffffff;
+  border-radius: 8rpx 28rpx 28rpx 28rpx;
 }
 .thinking-status text {
-  font-size: 28rpx;
-  color: #8a95a7;
+  font-size: 26rpx;
+  color: #86868b;
 }
 .thinking-dot {
   width: 12rpx;
   height: 12rpx;
-  background: #8a95a7;
+  background: #86868b;
   border-radius: 50%;
   animation: thinking 1.4s infinite ease-in-out both;
 }
@@ -139,6 +146,7 @@
   40% { transform: scale(1); opacity: 1; }
 }
 
+/* 思考过程 */
 .reasoning-wrap {
   margin-top: 12rpx;
   max-width: 100%;
@@ -148,17 +156,17 @@
   align-items: center;
   gap: 8rpx;
   padding: 10rpx 20rpx;
-  background: #f8f8fb;
-  border-radius: 12rpx;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 980rpx;
 }
 .reasoning-label {
-  font-size: 24rpx;
-  color: #8a95a7;
-  font-weight: 500;
+  font-size: 22rpx;
+  color: #86868b;
+  font-weight: 400;
 }
 .reasoning-arrow {
-  font-size: 22rpx;
-  color: #8a95a7;
+  font-size: 20rpx;
+  color: #86868b;
   transform: rotate(90deg);
   transition: transform 0.2s;
 }
@@ -168,16 +176,16 @@
 .reasoning-content {
   margin-top: 8rpx;
   padding: 16rpx 20rpx;
-  background: #f8f8fb;
-  border-radius: 12rpx;
-  border-left: 4rpx solid #c4cbd7;
+  background: #ffffff;
+  border-radius: 20rpx;
 }
 .reasoning-content text {
   font-size: 24rpx;
-  color: #8a95a7;
+  color: #6e6e73;
   line-height: 1.5;
 }
 
+/* 回答来源 */
 .sources-wrap {
   margin-top: 16rpx;
   width: 100%;
@@ -186,18 +194,18 @@
   display: flex;
   align-items: center;
   gap: 8rpx;
-  padding: 12rpx 20rpx;
-  background: #f0f4ff;
-  border-radius: 12rpx;
+  padding: 12rpx 24rpx;
+  background: rgba(0, 113, 227, 0.08);
+  border-radius: 980rpx;
 }
 .sources-label {
-  font-size: 26rpx;
-  color: #3370ff;
-  font-weight: 500;
+  font-size: 24rpx;
+  color: #0066cc;
+  font-weight: 400;
 }
 .sources-arrow {
-  font-size: 24rpx;
-  color: #3370ff;
+  font-size: 22rpx;
+  color: #0066cc;
   transform: rotate(90deg);
   transition: transform 0.2s;
 }
@@ -209,20 +217,19 @@
 }
 .source-item {
   display: flex;
-  gap: 12rpx;
-  padding: 16rpx 20rpx;
+  gap: 16rpx;
+  padding: 20rpx 24rpx;
   background: #ffffff;
-  border-radius: 12rpx;
-  margin-bottom: 8rpx;
-  border: 1rpx solid #e8ebf0;
+  border-radius: 20rpx;
+  margin-bottom: 12rpx;
 }
 .source-badge {
   min-width: 36rpx;
   height: 36rpx;
   border-radius: 50%;
-  background: #3370ff;
+  background: #1d1d1f;
   color: #ffffff;
-  font-size: 22rpx;
+  font-size: 20rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -233,14 +240,14 @@
 }
 .source-name {
   font-size: 24rpx;
-  color: #485264;
-  font-weight: 500;
+  color: #1d1d1f;
+  font-weight: 600;
   display: block;
   margin-bottom: 4rpx;
 }
 .source-snippet {
   font-size: 24rpx;
-  color: #8a95a7;
+  color: #86868b;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -249,12 +256,13 @@
   -webkit-box-orient: vertical;
 }
 
+/* 输入区 */
 .chat-input-area {
   display: flex;
-  padding: 16rpx 24rpx;
-  background: #ffffff;
-  border-top: 1rpx solid #e8ebf0;
+  padding: 12rpx 24rpx;
+  background: #f5f5f7;
   flex-shrink: 0;
+  padding-bottom: calc(12rpx + env(safe-area-inset-bottom));
 }
 .chat-input-wrap {
   display: flex;
@@ -264,25 +272,29 @@
 }
 .chat-input {
   flex: 1;
-  height: 72rpx;
-  background: #f5f5f5;
-  border-radius: 36rpx;
-  padding: 0 32rpx;
+  height: 80rpx;
+  background: #ffffff;
+  border-radius: 980rpx;
+  padding: 0 36rpx;
   font-size: 30rpx;
+  color: #1d1d1f;
 }
 .chat-send-btn {
   padding: 0 40rpx;
-  height: 72rpx;
-  line-height: 72rpx;
-  border-radius: 36rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 980rpx;
   font-size: 30rpx;
-  font-weight: 500;
+  font-weight: 400;
 }
 .chat-send-btn.active {
-  background: #3370ff;
+  background: #0071e3;
   color: #ffffff;
 }
+.chat-send-btn.active:active {
+  background: #005bb8;
+}
 .chat-send-btn.disabled {
-  background: #e8ebf0;
-  color: #c4cbd7;
+  background: #e8e8ed;
+  color: #86868b;
 }

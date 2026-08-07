@@ -1,8 +1,19 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+// 检查 JWT 密钥强度（生产环境必须配强密钥）
+const jwtSecret = process.env.JWT_SECRET || '';
+const isProd = process.env.NODE_ENV === 'production';
+if (isProd && jwtSecret.length < 32) {
+  throw new Error('生产环境 JWT_SECRET 必须至少 32 字符，请生成强随机串: openssl rand -hex 32');
+}
+if (!jwtSecret) {
+  console.warn('\x1b[33m⚠️  JWT_SECRET 未配置，使用默认弱密钥（仅限开发环境）\x1b[0m');
+}
+
 export const config = {
   port: parseInt(process.env.PORT || '3001', 10),
+  isProduction: isProd,
 
   wx: {
     appid: process.env.WX_APPID || '',
@@ -10,7 +21,7 @@ export const config = {
   },
 
   jwt: {
-    secret: process.env.JWT_SECRET || 'fallback_secret',
+    secret: jwtSecret || 'dev_fallback_secret_change_in_production',
     expiresIn: process.env.JWT_EXPIRES_IN || '15m',
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
   },

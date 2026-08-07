@@ -1,0 +1,166 @@
+/* 培训列表 — 编辑式页首 + 媒体行分组列表 */
+.training-list-page {
+  min-height: 100vh;
+  background: #f5f5f7;
+  padding-bottom: 48rpx;
+  box-sizing: border-box;
+}
+
+/* 页首：眉题 + 大标题 */
+.page-header {
+  padding: 48rpx 40rpx 32rpx;
+}
+.page-eyebrow {
+  font-size: 22rpx;
+  letter-spacing: 4rpx;
+  color: #86868b;
+  display: block;
+  margin-bottom: 16rpx;
+}
+.page-title {
+  font-size: 52rpx;
+  font-weight: 600;
+  letter-spacing: -1rpx;
+  line-height: 1.15;
+  color: #1d1d1f;
+  display: block;
+}
+
+.loading-wrap {
+  margin: 0 32rpx;
+  background: #ffffff;
+  border-radius: 28rpx;
+  overflow: hidden;
+}
+.empty-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400rpx;
+}
+.empty-text {
+  font-size: 26rpx;
+  color: #86868b;
+}
+
+/* 骨架屏：封面 + 两行文字，模拟真实行结构 */
+.sk-row {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+}
+.sk-cover {
+  width: 144rpx;
+  height: 144rpx;
+  border-radius: 20rpx;
+  flex-shrink: 0;
+}
+.sk-lines {
+  flex: 1;
+  margin-left: 28rpx;
+  display: flex;
+  flex-direction: column;
+}
+.sk-line {
+  height: 28rpx;
+  margin-bottom: 16rpx;
+}
+.sk-line:last-child {
+  margin-bottom: 0;
+}
+
+/* 分组容器：一个白圆角块装所有行 */
+.course-group {
+  margin: 0 32rpx;
+  background: #ffffff;
+  border-radius: 28rpx;
+  overflow: hidden;
+}
+
+.course-row {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  position: relative;
+  transition: background 0.15s ease;
+}
+.course-row:active {
+  background: #f5f5f7;
+}
+
+/* 行间细线：左缩进对齐文字 */
+.course-row::after {
+  content: '';
+  position: absolute;
+  left: 208rpx;
+  right: 0;
+  bottom: 0;
+  height: 1rpx;
+  background: #d2d2d7;
+  transform: scaleY(0.5);
+}
+.course-row.last::after {
+  display: none;
+}
+
+/* 封面缩略图 */
+.course-cover {
+  width: 144rpx;
+  height: 144rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #1d1d1f;
+}
+.course-cover-icon {
+  font-size: 56rpx;
+  font-weight: 600;
+  letter-spacing: -0.5rpx;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.course-info {
+  flex: 1;
+  margin-left: 28rpx;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.course-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #1d1d1f;
+  display: block;
+  margin-bottom: 10rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.course-meta {
+  display: flex;
+  align-items: center;
+}
+.meta-tag {
+  font-size: 22rpx;
+  line-height: 1;
+  color: #0071e3;
+  background: rgba(0, 113, 227, 0.08);
+  padding: 8rpx 16rpx;
+  border-radius: 980rpx;
+  margin-right: 16rpx;
+}
+.meta-item {
+  font-size: 22rpx;
+  color: #86868b;
+}
+
+.chevron {
+  font-size: 44rpx;
+  color: #c7c7cc;
+  margin-left: 16rpx;
+  line-height: 1;
+}

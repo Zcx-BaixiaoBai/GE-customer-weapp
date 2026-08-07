@@ -1,0 +1,39 @@
+<view class="training-list-page">
+  <view class="page-header anim">
+    <text class="page-eyebrow">TRAINING</text>
+    <text class="page-title">培训学习</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="sk-row" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="skeleton sk-cover"></view>
+      <view class="sk-lines">
+        <view class="skeleton sk-line" style="width: 60%"></view>
+        <view class="skeleton sk-line" style="width: 40%"></view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:elif="{{courses.length === 0}}" class="empty-wrap anim">
+    <text class="empty-text">暂无培训课程</text>
+  </view>
+
+  <view wx:else class="course-group anim anim-d1">
+    <view class="course-row {{index === courses.length - 1 ? 'last' : ''}}"
+          wx:for="{{courses}}" wx:key="id"
+          data-id="{{item.id}}" bindtap="goDetail">
+      <view class="course-cover" style="background: {{item.coverImage ? 'url(' + item.coverImage + ') center/cover' : '#1d1d1f'}}">
+        <view wx:if="{{!item.coverImage}}" class="course-cover-icon">{{item.title[0]}}</view>
+      </view>
+      <view class="course-info">
+        <text class="course-title">{{item.title}}</text>
+        <view class="course-meta">
+          <text class="meta-tag">{{item.category}}</text>
+          <text class="meta-item">{{item.lessonCount}}课时</text>
+          <text wx:if="{{item.totalDurationText}}" class="meta-item">· {{item.totalDurationText}}</text>
+        </view>
+      </view>
+      <text class="chevron">›</text>
+    </view>
+  </view>
+</view>

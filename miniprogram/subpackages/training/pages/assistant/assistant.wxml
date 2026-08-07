@@ -1,0 +1,32 @@
+<view class="assistant-page">
+  <!-- 课程上下文提示 -->
+  <view class="context-bar">
+    <text class="context-label">当前课程</text>
+    <text class="context-title">{{courseTitle}}</text>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view scroll-y class="msg-list" scroll-into-view="{{scrollToView}}" scroll-with-animation>
+    <view class="msg-item {{item.role === 'user' ? 'msg-user' : 'msg-ai'}}"
+          wx:for="{{messages}}" wx:key="index" id="msg-{{index}}">
+      <view class="msg-avatar {{item.role === 'user' ? 'avatar-user' : 'avatar-ai'}}">
+        <text wx:if="{{item.role === 'user'}}" class="avatar-text">我</text>
+        <text wx:else class="avatar-text">AI</text>
+      </view>
+      <view class="msg-bubble {{item.role === 'user' ? 'bubble-user' : 'bubble-ai'}}">
+        <text class="msg-content">{{item.content}}{{item.streaming ? '▍' : ''}}</text>
+      </view>
+    </view>
+    <view class="msg-bottom"></view>
+  </scroll-view>
+
+  <!-- 输入栏 -->
+  <view class="input-bar">
+    <input class="input-field" type="text" placeholder="输入问题..."
+           value="{{inputValue}}" bindinput="onInput"
+           confirm-type="send" bindconfirm="onSend" />
+    <view class="send-btn {{inputValue && !isStreaming ? 'active' : ''}}" bindtap="onSend">
+      <text class="send-text">{{isStreaming ? '...' : '发送'}}</text>
+    </view>
+  </view>
+</view>
