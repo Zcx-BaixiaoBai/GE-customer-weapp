@@ -58,6 +58,22 @@
       </view>
     </view>
 
+    <!-- 租户状态 -->
+    <view class="info-card" wx:if="{{registered}}">
+      <view class="info-title">我的租户</view>
+      <view class="info-row">
+        <text class="info-label">所属租户</text>
+        <text class="info-value">{{tenantName || '—'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">角色</text>
+        <text class="info-value">{{isManager ? '店长' : '员工'}}</text>
+      </view>
+    </view>
+    <view class="info-card" wx:if="{{isLogin && !registered && !checkingTenant}}" bindtap="goTenantSelect">
+      <view class="info-title" style="color:#0071e3">未选择租户，点击选择 ›</view>
+    </view>
+
     <view class="info-card">
       <view class="info-title">个人信息</view>
       <view class="info-row">
@@ -79,6 +95,16 @@
     </view>
 
     <view class="profile-menu">
+      <view class="menu-item" wx:if="{{isManager}}" bindtap="goStoreManage">
+        <view class="menu-dot" style="background:#ff9500"></view>
+        <text class="menu-title">店长管理（本店学习）</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item" bindtap="goTenantSelect">
+        <view class="menu-dot" style="background:#34c759"></view>
+        <text class="menu-title">{{registered ? '切换租户' : '选择租户'}}</text>
+        <text class="menu-arrow">></text>
+      </view>
       <view class="menu-item" bindtap="goRepairList">
         <view class="menu-dot blue"></view>
         <text class="menu-title">我的报修</text>

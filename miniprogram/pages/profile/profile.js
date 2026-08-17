@@ -1,4 +1,5 @@
 var auth = require('../../utils/auth');
+var config = require('../../config/env');
 
 Page({
   data: {
@@ -8,6 +9,10 @@ Page({
     nickName: '',
     avatarUrl: '',
     needSetupProfile: false,
+    registered: false,
+    isManager: false,
+    tenantName: '',
+    checkingTenant: false,
   },
 
   onLoad: function () {
@@ -31,6 +36,36 @@ Page({
       avatarUrl: avatarUrl,
       needSetupProfile: needSetup
     });
+    // 登录后检查租户注册状态
+    if (isLogin) {
+      this.checkRegistration(phone);
+    } else {
+      this.setData({ registered: false, isManager: false, tenantName: '' });
+    }
+  },
+
+  // 检查当前用户是否已选择租户
+  checkRegistration: function (phone) {
+    var self = this;
+    self.setData({ checkingTenant: true });
+    var url = config.config.API_BASE_URL + '/org/my-profile?phone=' + encodeURIComponent(phone);
+    wx.request({
+      url: url,
+      method: 'GET',
+      timeout: 10000,
+      success: function (res) {
+        if (res.statusCode === 200 && res.data && res.data.code === 0) {
+          var d = res.data.data || {};
+          self.setData({
+            registered: !!d.registered,
+            isManager: !!d.isManager,
+            tenantName: (d.tenant && d.tenant.name) || '',
+          });
+        }
+      },
+      fail: function () { /* 静默失败，不影响使用 */ },
+      complete: function () { self.setData({ checkingTenant: false }); }
+    });
   },
 
   // 微信登录
@@ -51,6 +86,8 @@ Page({
         avatarUrl: avatarUrl,
         needSetupProfile: needSetup
       });
+      // 登录成功后检查是否已选租户，未选则引导去选
+      self.checkRegistrationAndGuide(phone);
     }).catch(function (err) {
       console.error('getPhone error', err);
       var msg = err && err.message ? err.message : '登录失败';
@@ -59,6 +96,42 @@ Page({
         content: msg,
         showCancel: false
       });
+    });
+  },
+
+  // 检查注册状态，未注册则引导选择租户
+  checkRegistrationAndGuide: function (phone) {
+    var self = this;
+    var url = config.config.API_BASE_URL + '/org/my-profile?phone=' + encodeURIComponent(phone);
+    wx.request({
+      url: url,
+      method: 'GET',
+      timeout: 10000,
+      success: function (res) {
+        if (res.statusCode === 200 && res.data && res.data.code === 0) {
+          var d = res.data.data || {};
+          self.setData({
+            registered: !!d.registered,
+            isManager: !!d.isManager,
+            tenantName: (d.tenant && d.tenant.name) || '',
+          });
+          if (!d.registered) {
+            wx.showModal({
+              title: '选择租户',
+              content: '请先选择您所在的租户（可加入已有租户或新建）',
+              confirmText: '去选择',
+              success: function (r) {
+                if (r.confirm) {
+                  wx.navigateTo({ url: '/pages/tenant-select/tenant-select' });
+                }
+              }
+            });
+          } else if (d.isManager) {
+            wx.showToast({ title: '欢迎店长', icon: 'none' });
+          }
+        }
+      },
+      fail: function () { /* 静默 */ }
     });
   },
 
@@ -102,6 +175,16 @@ Page({
     this.setData({ needSetupProfile: false });
   },
 
+  // 跳转选择租户
+  goTenantSelect: function () {
+    wx.navigateTo({ url: '/pages/tenant-select/tenant-select' });
+  },
+
+  // 店长管理
+  goStoreManage: function () {
+    wx.navigateTo({ url: '/subpackages/user-center/pages/store-manage/store-manage' });
+  },
+
   goHistory: function () {
     wx.navigateTo({ url: '/subpackages/user-center/pages/history/history' });
   },
@@ -127,7 +210,8 @@ Page({
           auth.logout();
           self.setData({
             phone: '', isLogin: false,
-            nickName: '', avatarUrl: '', needSetupProfile: false
+            nickName: '', avatarUrl: '', needSetupProfile: false,
+            registered: false, isManager: false, tenantName: '',
           });
         }
       }

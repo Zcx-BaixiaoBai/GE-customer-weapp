@@ -4,6 +4,7 @@
     "pages/chat/chat",
     "pages/repair/repair",
     "pages/profile/profile",
+    "pages/tenant-select/tenant-select",
     "pages/privacy/privacy"
   ],
   "subpackages": [
@@ -11,7 +12,8 @@
       "root": "subpackages/user-center",
       "name": "user-center",
       "pages": [
-        "pages/history/history"
+        "pages/history/history",
+        "pages/store-manage/store-manage"
       ]
     },
     {

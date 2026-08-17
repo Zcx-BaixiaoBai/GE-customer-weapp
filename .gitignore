@@ -43,3 +43,6 @@ server/uploads/
 
 # Production env (keep .env.example only)
 server/.env.production
+
+# DevTools rendering tooling (temp: automator scripts + screenshots)
+.devtools-scripts/

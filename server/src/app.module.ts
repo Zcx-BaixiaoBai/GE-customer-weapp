@@ -7,6 +7,7 @@ import { RepairModule } from './modules/repair/repair.module';
 import { TrainingModule } from './modules/training/training.module';
 import { ExamModule } from './modules/exam/exam.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { OrgModule } from './modules/org/org.module';
 import { DatabaseService } from './database/database.service';
 
 @Module({
@@ -22,6 +23,7 @@ import { DatabaseService } from './database/database.service';
     RepairModule,
     TrainingModule,
     ExamModule,
+    OrgModule,
     AdminModule,
   ],
   controllers: [],

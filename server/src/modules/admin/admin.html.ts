@@ -63,6 +63,8 @@ body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0f2f5;color:#1
   <div class="tab active" onclick="sw('courses')">培训课程</div>
   <div class="tab" onclick="sw('questions')">题库管理</div>
   <div class="tab" onclick="sw('exams')">考试管理</div>
+  <div class="tab" onclick="sw('org')">租户架构</div>
+  <div class="tab" onclick="sw('onboard')">入职统计</div>
   <div class="tab" onclick="sw('stats')">统计看板</div>
 </div>
 <div class="content">
@@ -169,17 +171,82 @@ body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0f2f5;color:#1
   </div>
 </div>
 
+<div class="panel" id="p-org">
+  <div class="card">
+    <h2>新建架构节点</h2>
+    <p style="font-size:12px;color:#8a95a7;margin-bottom:12px">架构层级：项目 → 楼层 → 租户（员工挂在租户下）。先建根节点（项目），再逐级添加子节点。</p>
+    <div class="row">
+      <div class="rg fg" style="max-width:260px"><label>父节点（留空=根节点）</label><select id="orgParent"><option value="">— 根节点 —</option></select></div>
+      <div class="rg fg" style="max-width:150px"><label>节点类型</label><select id="orgType"><option value="project">项目</option><option value="floor">楼层</option><option value="tenant">租户</option></select></div>
+      <div class="rg fg"><label>名称</label><input id="orgName" placeholder="如：金鹰世界 / F1 / 某品牌"></div>
+      <div class="rg fg" style="max-width:160px"><label>编码（可选）</label><input id="orgCode" placeholder="F1 / 品牌号"></div>
+    </div>
+    <button class="btn btn-p" onclick="createOrgNode()">创建节点</button>
+  </div>
+  <div class="card">
+    <h2>架构树</h2>
+    <div id="org-tree"></div>
+  </div>
+  <div class="card">
+    <h2>用户（租户员工）管理</h2>
+    <p style="font-size:12px;color:#8a95a7;margin-bottom:12px">用户通过手机号关联到架构节点，与学习/考试记录的手机号一致。手机号需与员工小程序登录手机号相同。</p>
+    <div class="row">
+      <div class="rg fg"><label>手机号</label><input id="usrPhone" placeholder="13800138000"></div>
+      <div class="rg fg"><label>姓名</label><input id="usrName" placeholder="员工姓名"></div>
+      <div class="rg fg" style="max-width:160px"><label>岗位</label><input id="usrPos" placeholder="店长"></div>
+      <div class="rg fg" style="max-width:140px"><label>角色</label><select id="usrRole"><option value="employee">员工</option><option value="manager">店长</option></select></div>
+    </div>
+    <div class="fg" style="max-width:360px"><label>所属租户节点</label><select id="usrOrg"></select></div>
+    <button class="btn btn-p" onclick="createUser()">添加用户</button>
+  </div>
+  <div class="card">
+    <h2>用户列表</h2>
+    <div class="filter-bar">
+      <label style="font-size:12px;color:#8a95a7">按节点筛选:</label>
+      <select id="usrFilter" onchange="loadUsers()"><option value="">全部用户</option></select>
+    </div>
+    <div id="user-list"></div>
+  </div>
+</div>
+
+<div class="panel" id="p-onboard">
+  <div class="card">
+    <h2>入职必修项管理</h2>
+    <p style="font-size:12px;color:#8a95a7;margin-bottom:12px">设置入职必学的课程和必考的考试。员工需全部完成才算「完成入职」。</p>
+    <div class="row">
+      <div class="rg fg" style="max-width:140px"><label>类型</label><select id="obType" onchange="renderObPick()"><option value="course">课程</option><option value="exam">考试</option></select></div>
+      <div class="rg fg"><label>选择</label><select id="obPick"></select></div>
+    </div>
+    <button class="btn btn-p" onclick="addOnboarding()">添加为入职项</button>
+    <div style="margin-top:16px"><h3 style="font-size:14px;margin-bottom:8px">当前入职必修项</h2><div id="ob-list"></div></div>
+  </div>
+  <div class="card">
+    <h2>入职完成统计（按架构）</h2>
+    <p style="font-size:12px;color:#8a95a7;margin-bottom:12px">每个架构节点下员工的入职完成情况。点击节点查看明细。</p>
+    <div class="stat-grid" id="ob-summary"></div>
+    <div id="ob-tree"></div>
+  </div>
+  <div class="card" id="ob-detail-card" style="display:none">
+    <h2 id="ob-detail-title">节点明细</h2>
+    <div id="ob-detail-summary"></div>
+    <div id="ob-detail-users"></div>
+  </div>
+</div>
+
 </div>
 
 <script>
 var B = '/api/admin';
 var ORIGIN = location.origin;
+var O = ORIGIN + '/api/org';
 var allQuestions = [];
 var allCourses = [];
+var allOrgNodes = [];
+var allUsers = [];
 
 function sw(n) {
   document.querySelectorAll('.tab').forEach(function(t, i) {
-    t.classList.toggle('active', i === ['courses','questions','exams','stats'].indexOf(n));
+    t.classList.toggle('active', i === ['courses','questions','exams','org','onboard','stats'].indexOf(n));
   });
   document.querySelectorAll('.panel').forEach(function(p) {
     p.classList.toggle('active', p.id === 'p-' + n);
@@ -187,6 +254,8 @@ function sw(n) {
   if (n === 'courses') loadCourses();
   if (n === 'questions') { loadQ(); renderOpts(); }
   if (n === 'exams') { loadPick(); loadExams(); }
+  if (n === 'org') { loadOrgTree(); loadUsers(); }
+  if (n === 'onboard') { loadOnboarding(); loadObStats(); }
   if (n === 'stats') loadStats();
 }
 
@@ -747,6 +816,287 @@ function createExam() {
   }}).then(function() { loadExams(); val('et',''); document.querySelectorAll('#epick input[data-qid]').forEach(function(c) { c.checked = false; }); updatePickCount(); });
 }
 function pub(id) { api(B + '/api/exam/' + id + '/publish', {method: 'POST'}).then(function() { loadExams(); }); }
+
+// ===== 租户架构 =====
+var ORG_TYPE_LABEL = {project:'项目', floor:'楼层', tenant:'租户'};
+function orgTypeLabel(t) { return ORG_TYPE_LABEL[t] || t; }
+function orgTypeColor(t) { return t==='project'?'#3370ff':t==='floor'?'#ff8f1f':'#00b578'; }
+
+function loadOrgTree() {
+  api(O + '/tree').then(function(r) {
+    allOrgNodes = flatten(r.data || []);
+    renderOrgParentSelect();
+    renderOrgTree(r.data || []);
+  });
+}
+function flatten(nodes, out) {
+  out = out || [];
+  (nodes || []).forEach(function(n) {
+    out.push(n);
+    if (n.children) flatten(n.children, out);
+  });
+  return out;
+}
+function renderOrgParentSelect() {
+  var h = '<option value="">— 根节点 —</option>';
+  allOrgNodes.forEach(function(n) {
+    var pad = '';
+    for (var i=0;i<n.level;i++) pad += '　';
+    h += '<option value="' + n.id + '">' + pad + orgTypeLabel(n.nodeType) + '/' + esc(n.name) + '</option>';
+  });
+  document.getElementById('orgParent').innerHTML = h;
+  // 用户所属租户节点：只列租户类型（叶子最适合挂员工），但也允许所有节点
+  var uh = '<option value="">— 未分配 —</option>';
+  allOrgNodes.forEach(function(n) {
+    var pad = '';
+    for (var i=0;i<n.level;i++) pad += '　';
+    uh += '<option value="' + n.id + '">' + pad + orgTypeLabel(n.nodeType) + '/' + esc(n.name) + '</option>';
+  });
+  document.getElementById('usrOrg').innerHTML = uh;
+  document.getElementById('usrFilter').innerHTML = '<option value="">全部用户</option>' + allOrgNodes.map(function(n) {
+    var pad = ''; for (var i=0;i<n.level;i++) pad += '　';
+    return '<option value="' + n.id + '">' + pad + orgTypeLabel(n.nodeType) + '/' + esc(n.name) + '</option>';
+  }).join('');
+}
+function renderOrgTree(nodes) {
+  var h = '';
+  if (!nodes || nodes.length === 0) h = '<div class="empty">暂无架构节点，在上方创建根节点（项目）</div>';
+  else h = nodes.map(function(n) { return renderOrgNode(n, 0); }).join('');
+  document.getElementById('org-tree').innerHTML = h;
+}
+function renderOrgNode(n, depth) {
+  var pad = '';
+  for (var i=0;i<depth;i++) pad += '<span style="display:inline-block;width:20px;color:#cfd6e0">│</span>';
+  var childH = (n.children || []).map(function(c) { return renderOrgNode(c, depth+1); }).join('');
+  return '<div class="lesson-row" style="margin-left:' + (depth*0) + 'px">' +
+    '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
+      pad +
+      '<span class="tag" style="background:' + orgTypeColor(n.nodeType) + '">' + orgTypeLabel(n.nodeType) + '</span>' +
+      '<input type="text" value="' + esc(n.name) + '" data-nid="' + n.id + '" data-field="name" style="font-size:14px;font-weight:600;border:1px solid transparent;border-radius:4px;padding:4px 8px;flex:1;min-width:140px" onblur="updOrgNode(this)">' +
+      '<span style="font-size:12px;color:#8a95a7">编码:</span>' +
+      '<input type="text" value="' + esc(n.code) + '" data-nid="' + n.id + '" data-field="code" style="width:90px;border:1px solid transparent;border-radius:4px;padding:4px 6px;font-size:12px" onblur="updOrgNode(this)">' +
+      '<span style="font-size:12px;color:#8a95a7">用户:' + (n.userCount||0) + '</span>' +
+      '<div style="display:flex;gap:6px">' +
+        '<button class="btn btn-w" style="font-size:11px;padding:3px 10px" onclick="addChildOrg(\'' + n.id + '\')">+子节点</button>' +
+        '<button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="delOrgNode(\'' + n.id + '\')">删除</button>' +
+      '</div>' +
+    '</div>' +
+    (childH ? '<div style="margin-top:10px;padding-left:8px;border-left:2px solid #f0f2f5">' + childH + '</div>' : '') +
+  '</div>';
+}
+function createOrgNode() {
+  var parentId = val('orgParent') || null;
+  var nodeType = val('orgType');
+  var name = val('orgName');
+  if (!name) { alert('请输入名称'); return; }
+  api(O + '/nodes', {method:'POST', body:{parentId:parentId, nodeType:nodeType, name:name, code:val('orgCode')}}).then(function(r) {
+    if (r.code === 0) { val('orgName',''); val('orgCode',''); loadOrgTree(); }
+    else alert(r.message || '创建失败');
+  });
+}
+function addChildOrg(pid) {
+  var name = prompt('输入子节点名称');
+  if (!name) return;
+  // 根据父节点类型推断子类型
+  var parent = allOrgNodes.find(function(n){return n.id===pid;});
+  var childType = 'tenant';
+  if (parent && parent.nodeType === 'project') childType = 'floor';
+  else if (parent && parent.nodeType === 'floor') childType = 'tenant';
+  api(O + '/nodes', {method:'POST', body:{parentId:pid, nodeType:childType, name:name}}).then(function(r) {
+    if (r.code !== 0) alert(r.message || '创建失败');
+    loadOrgTree();
+  });
+}
+function updOrgNode(inp) {
+  api(O + '/nodes/' + inp.dataset.nid, {method:'PUT', body:{[inp.dataset.field]: inp.value}});
+}
+function delOrgNode(id) {
+  if (!confirm('删除该节点及其所有子节点？节点下用户将自动解绑。')) return;
+  api(O + '/nodes/' + id, {method:'DELETE'}).then(function() { loadOrgTree(); });
+}
+
+// ===== 用户（租户员工） =====
+function loadUsers() {
+  var fid = document.getElementById('usrFilter') ? document.getElementById('usrFilter').value : '';
+  var url = O + '/users' + (fid ? '?org_node_id=' + encodeURIComponent(fid) : '');
+  api(url).then(function(r) {
+    allUsers = r.data || [];
+    renderUsers();
+  });
+}
+function renderUsers() {
+  var nodeMap = {};
+  allOrgNodes.forEach(function(n){ nodeMap[n.id] = n; });
+  var h = '';
+  if (allUsers.length === 0) h = '<div class="empty">暂无用户，在上方添加</div>';
+  else {
+    h = '<table class="stat-table"><tr><th>手机号</th><th>姓名</th><th>岗位</th><th>角色</th><th>所属节点</th><th>状态</th><th>操作</th></tr>';
+    allUsers.forEach(function(u) {
+      var node = u.orgNodeId && nodeMap[u.orgNodeId] ? nodeMap[u.orgNodeId] : null;
+      var nodeStr = node ? '<span style="color:'+orgTypeColor(node.nodeType)+'">'+orgTypeLabel(node.nodeType)+'</span>/'+esc(node.name) : '<span style="color:#8a95a7">未分配</span>';
+      var st = u.status === 'active' ? '<span style="color:#00b578">在职</span>' : '<span style="color:#8a95a7">离职</span>';
+      var roleSel = u.role === 'manager' ? '<span style="color:#ff9500;font-weight:600">店长</span>' : '<span style="color:#8a95a7">员工</span>';
+      h += '<tr>' +
+        '<td><input type="text" value="' + esc(u.phone) + '" data-uid="' + u.id + '" data-field="phone" style="width:120px;border:1px solid transparent;border-radius:4px;padding:4px" onblur="updUser(this)"></td>' +
+        '<td><input type="text" value="' + esc(u.name) + '" data-uid="' + u.id + '" data-field="name" style="width:90px;border:1px solid transparent;border-radius:4px;padding:4px" onblur="updUser(this)"></td>' +
+        '<td><input type="text" value="' + esc(u.position) + '" data-uid="' + u.id + '" data-field="position" style="width:80px;border:1px solid transparent;border-radius:4px;padding:4px" onblur="updUser(this)"></td>' +
+        '<td><select data-uid="' + u.id + '" data-field="role" style="padding:4px;border:1px solid transparent;border-radius:4px" onchange="updUser(this)"><option value="employee"' + (u.role!=='manager'?' selected':'') + '>员工</option><option value="manager"' + (u.role==='manager'?' selected':'') + '>店长</option></select></td>' +
+        '<td>' + nodeStr + '</td>' +
+        '<td>' + st + '</td>' +
+        '<td><button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="delUser(\'' + u.id + '\')">删除</button></td>' +
+      '</tr>';
+    });
+    h += '</table>';
+  }
+  document.getElementById('user-list').innerHTML = h;
+}
+function createUser() {
+  var phone = val('usrPhone').trim();
+  if (!phone) { alert('请输入手机号'); return; }
+  api(O + '/users', {method:'POST', body:{
+    phone:phone, name:val('usrName'), position:val('usrPos'), role:val('usrRole'), orgNodeId:val('usrOrg')||null
+  }}).then(function(r) {
+    if (r.code === 0) { val('usrPhone',''); val('usrName',''); val('usrPos',''); loadOrgTree(); loadUsers(); }
+    else alert(r.message || '添加失败');
+  });
+}
+function updUser(inp) {
+  api(O + '/users/' + inp.dataset.uid, {method:'PUT', body:{[inp.dataset.field]: inp.value}}).then(function() { loadOrgTree(); });
+}
+function delUser(id) {
+  if (!confirm('确认删除该用户？')) return;
+  api(O + '/users/' + id, {method:'DELETE'}).then(function() { loadUsers(); });
+}
+
+// ===== 入职必修项 =====
+function loadOnboarding() {
+  Promise.all([
+    api(O + '/onboarding'),
+    api(B + '/api/training/courses'),
+    api(B + '/api/exam/list')
+  ]).then(function(res) {
+    window._obItems = res[0].data || [];
+    window._obCourses = res[1].data || [];
+    window._obExams = res[2].data || [];
+    renderObList();
+    renderObPick();
+  });
+}
+function renderObPick() {
+  var t = val('obType');
+  var list = t === 'exam' ? window._obExams : window._obCourses;
+  var existing = (window._obItems || []).filter(function(i){return i.itemType===t;}).map(function(i){return i.itemId;});
+  var h = '';
+  (list || []).forEach(function(x) {
+    if (existing.indexOf(x.id) === -1) {
+      h += '<option value="' + x.id + '">' + esc(x.title) + '</option>';
+    }
+  });
+  document.getElementById('obPick').innerHTML = h || '<option value="">无可选项</option>';
+}
+function renderObList() {
+  var h = '';
+  var items = window._obItems || [];
+  if (items.length === 0) h = '<div class="empty">暂未设置入职必修项</div>';
+  else {
+    h = '<table class="stat-table"><tr><th>类型</th><th>名称</th><th>操作</th></tr>';
+    items.forEach(function(i) {
+      var tl = i.itemType === 'course' ? '课程' : '考试';
+      var tc = i.itemType === 'course' ? '#3370ff' : '#9b59b6';
+      h += '<tr><td><span class="tag" style="background:'+tc+'">'+tl+'</span></td><td>' + esc(i.title || i.itemId) + '</td><td><button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="delOnboarding(\'' + i.id + '\')">移除</button></td></tr>';
+    });
+    h += '</table>';
+  }
+  document.getElementById('ob-list').innerHTML = h;
+}
+function addOnboarding() {
+  var t = val('obType');
+  var itemId = val('obPick');
+  if (!itemId) { alert('请选择要添加的项目'); return; }
+  api(O + '/onboarding', {method:'POST', body:{itemType:t, itemId:itemId}}).then(function(r) {
+    if (r.code !== 0) alert(r.message || '添加失败');
+    loadOnboarding();
+  });
+}
+function delOnboarding(id) {
+  if (!confirm('移除该入职项？')) return;
+  api(O + '/onboarding/' + id, {method:'DELETE'}).then(function() { loadOnboarding(); });
+}
+
+// ===== 入职统计（按架构） =====
+function loadObStats() {
+  api(O + '/stats/onboarding').then(function(r) {
+    var d = r.data || {};
+    var s = d.summary || {};
+    var h = '';
+    h += statBox('blue', s.totalUsers||0, '总员工数');
+    h += statBox('green', s.completedCount||0, '已完成入职');
+    h += statBox('orange', s.completionRate||0, '完成率(%)');
+    h += statBox('red', (s.onboardingCourses||0)+(s.onboardingExams||0), '入职项数');
+    h += statBox('orange', Math.round((s.totalWatchedDuration||0)/60), '学习时长(分)');
+    h += statBox('blue', s.totalExamAttempts||0, '考试次数');
+    document.getElementById('ob-summary').innerHTML = h;
+    var nodes = d.nodes || [];
+    var th = '';
+    if (nodes.length === 0) th = '<div class="empty">' + (s.hasRequirements ? '暂无架构节点或员工' : '请先在「租户架构」页设置架构和员工，并配置入职必修项') + '</div>';
+    else th = nodes.map(function(n) { return renderObStatNode(n, 0); }).join('');
+    document.getElementById('ob-tree').innerHTML = th;
+  });
+}
+function renderObStatNode(n, depth) {
+  var pad = '';
+  for (var i=0;i<depth;i++) pad += '<span style="display:inline-block;width:20px;color:#cfd6e0">│</span>';
+  var rate = n.completionRate || 0;
+  var barColor = rate >= 100 ? '#00b578' : rate >= 50 ? '#ff8f1f' : '#e9556e';
+  var childH = (n.children || []).map(function(c) { return renderObStatNode(c, depth+1); }).join('');
+  return '<div style="padding:8px 0;border-bottom:1px solid #f8f9fa">' +
+    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;cursor:pointer" onclick="showObDetail(\'' + n.id + '\')">' +
+      pad +
+      '<span class="tag" style="background:'+orgTypeColor(n.nodeType)+'">' + orgTypeLabel(n.nodeType) + '</span>' +
+      '<span style="font-size:14px;font-weight:600">' + esc(n.name) + '</span>' +
+      (n.code ? '<span style="font-size:12px;color:#8a95a7">'+esc(n.code)+'</span>' : '') +
+      '<span style="font-size:12px;color:#8a95a7">员工:' + (n.userCount||0) + '</span>' +
+      '<span style="font-size:12px;color:#8a95a7">已完成:' + (n.completedCount||0) + '/' + (n.userCount||0) + '</span>' +
+      '<span style="font-size:12px;color:#8a95a7">学习:' + Math.round((n.totalWatchedDuration||0)/60) + '分</span>' +
+      '<span style="font-size:12px;color:#8a95a7">考试:' + (n.totalExamAttempts||0) + '次</span>' +
+      '<div style="flex:1;min-width:120px;max-width:240px;background:#f0f2f5;border-radius:8px;height:8px;overflow:hidden"><div style="width:'+rate+'%;height:100%;background:'+barColor+';border-radius:8px"></div></div>' +
+      '<span style="font-size:12px;font-weight:600;color:'+barColor+'">'+rate+'%</span>' +
+      '<span style="font-size:11px;color:#3370ff">查看明细 ▸</span>' +
+    '</div>' +
+    (childH ? '<div style="margin-top:4px;padding-left:8px">' + childH + '</div>' : '') +
+  '</div>';
+}
+function showObDetail(nodeId) {
+  api(O + '/stats/onboarding/' + nodeId).then(function(r) {
+    var d = r.data || {};
+    if (!d.node) { document.getElementById('ob-detail-card').style.display='none'; return; }
+    document.getElementById('ob-detail-card').style.display = 'block';
+    document.getElementById('ob-detail-title').textContent = d.node.nodeTypeLabel + '/' + d.node.name + ' — 入职明细';
+    var s = d.summary || {};
+    var sh = '';
+    sh += statBox('blue', s.totalUsers||0, '员工数');
+    sh += statBox('green', s.completedCount||0, '已完成入职');
+    sh += statBox('orange', s.completionRate||0, '完成率(%)');
+    document.getElementById('ob-detail-summary').innerHTML = '<div class="stat-grid">'+sh+'</div>';
+    var users = d.users || [];
+    var uh = '';
+    if (users.length === 0) uh = '<div class="empty">该节点下暂无员工</div>';
+    else {
+      uh = '<table class="stat-table"><tr><th>手机号</th><th>姓名</th><th>岗位</th><th>课程</th><th>考试</th><th>入职</th><th>学习时长(分)</th></tr>';
+      users.forEach(function(u) {
+        var done = u.onboardingCompleted ? '<span style="color:#00b578">✅完成</span>' : '<span style="color:#e9556e">未完成</span>';
+        uh += '<tr><td>' + esc(u.phone) + '</td><td>' + esc(u.name) + '</td><td>' + esc(u.position) + '</td>' +
+          '<td>' + u.coursesCompleted + '/' + u.coursesTotal + '</td>' +
+          '<td>' + u.examsPassed + '/' + u.examsTotal + '</td>' +
+          '<td>' + done + '</td>' +
+          '<td>' + Math.round((u.totalWatchedDuration||0)/60) + '</td></tr>';
+      });
+      uh += '</table>';
+    }
+    document.getElementById('ob-detail-users').innerHTML = uh;
+    document.getElementById('ob-detail-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+}
 
 // 初始化
 renderOpts();

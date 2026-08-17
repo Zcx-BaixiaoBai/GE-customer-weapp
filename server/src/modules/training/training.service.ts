@@ -89,7 +89,15 @@ export class TrainingService {
     if (this.useDb) {
       try {
         const courses = await databaseService.query('SELECT * FROM courses ORDER BY created_at DESC');
-        return courses.map(this.mapCourseRow);
+        // 每个课程带上它的课时列表
+        const result: Course[] = [];
+        for (const c of courses) {
+          const lessons = await databaseService.query(
+            'SELECT * FROM lessons WHERE course_id = ? ORDER BY `order`', [c.id]
+          );
+          result.push({ ...this.mapCourseRow(c), lessons: lessons.map(this.mapLessonRow) });
+        }
+        return result;
       } catch (e) {
         this.logger.warn('MySQL查询失败，降级JSON: ' + e.message);
       }

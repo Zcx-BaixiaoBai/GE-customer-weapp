@@ -1,0 +1,38 @@
+<view class="ts-container">
+  <view class="ts-header">
+    <text class="ts-title">选择您的租户</text>
+    <text class="ts-sub">加入已有租户成为员工，或新建租户成为店长</text>
+  </view>
+
+  <view class="seg">
+    <view class="seg-item {{mode === 'join' ? 'active' : ''}}" bindtap="switchMode" data-mode="join">加入已有</view>
+    <view class="seg-item {{mode === 'create' ? 'active' : ''}}" bindtap="switchMode" data-mode="create">新建租户</view>
+  </view>
+
+  <!-- 加入已有租户 -->
+  <view wx:if="{{mode === 'join'}}">
+    <view wx:if="{{loading}}" class="empty">加载中…</view>
+    <view wx:elif="{{tenants.length === 0}}" class="empty">暂无租户，请切换到「新建租户」</view>
+    <view wx:else>
+      <view class="tenant-card" wx:for="{{tenants}}" wx:key="id"
+            bindtap="joinTenant" data-id="{{item.id}}" data-name="{{item.name}}">
+        <view class="tenant-info">
+          <text class="tenant-name">{{item.name}}</text>
+          <text class="tenant-path">{{item.path}}</text>
+        </view>
+        <text class="tenant-arrow">加入</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 新建租户 -->
+  <view wx:if="{{mode === 'create'}}" class="create-box">
+    <view class="field">
+      <text class="field-label">租户名称</text>
+      <input class="field-input" placeholder="如：某品牌店铺" value="{{newTenantName}}" bindinput="onNameInput" />
+    </view>
+    <view class="create-tip">新建后您将成为该租户的店长，可查看本店全员学习情况</view>
+    <button class="create-btn {{newTenantName ? 'active' : ''}}" bindtap="createTenant"
+            disabled="{{submitting}}">{{submitting ? '提交中…' : '创建并成为店长'}}</button>
+  </view>
+</view>

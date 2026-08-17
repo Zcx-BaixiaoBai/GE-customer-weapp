@@ -1,0 +1,67 @@
+<view class="sm-container">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <view wx:elif="{{error}}" class="empty">
+    <text>{{error}}</text>
+    <view class="retry-btn" bindtap="loadData">重试</view>
+  </view>
+
+  <view wx:else>
+    <!-- 店铺概览 -->
+    <view class="sm-header">
+      <text class="sm-title">{{node.name || '我的店铺'}}</text>
+      <text class="sm-sub" wx:if="{{manager.name}}">店长：{{manager.name}}</text>
+    </view>
+
+    <view class="stat-grid">
+      <view class="stat-box">
+        <text class="stat-num">{{summary.totalUsers || 0}}</text>
+        <text class="stat-label">员工数</text>
+      </view>
+      <view class="stat-box green">
+        <text class="stat-num">{{summary.completedCount || 0}}</text>
+        <text class="stat-label">已完成入职</text>
+      </view>
+      <view class="stat-box orange">
+        <text class="stat-num">{{summary.completionRate || 0}}%</text>
+        <text class="stat-label">完成率</text>
+      </view>
+    </view>
+
+    <!-- 入职要求 -->
+    <view class="card" wx:if="{{onboardingItems.length > 0}}">
+      <text class="card-title">入职要求（{{onboardingItems.length}}项）</text>
+      <view class="req-list">
+        <view class="req-item" wx:for="{{onboardingItems}}" wx:key="id">
+          <text class="req-tag {{item.itemType === 'course' ? 'course' : 'exam'}}">{{item.itemType === 'course' ? '课程' : '考试'}}</text>
+          <text class="req-name">{{item.title}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 员工学习明细 -->
+    <view class="card">
+      <text class="card-title">员工学习情况</text>
+      <view wx:if="{{users.length === 0}}" class="empty small">本店暂无其他员工</view>
+      <view class="emp-table" wx:else>
+        <view class="emp-row emp-head">
+          <text class="emp-name">员工</text>
+          <text class="emp-course">课程</text>
+          <text class="emp-exam">考试</text>
+          <text class="emp-status">入职</text>
+        </view>
+        <view class="emp-row" wx:for="{{users}}" wx:key="id">
+          <view class="emp-name">
+            <text class="emp-phone">{{item.name || item.phone}}</text>
+            <text class="emp-pos" wx:if="{{item.position}}">{{item.position}}</text>
+          </view>
+          <text class="emp-course">{{item.coursesCompleted}}/{{item.coursesTotal}}</text>
+          <text class="emp-exam">{{item.examsPassed}}/{{item.examsTotal}}</text>
+          <text class="emp-status {{item.onboardingCompleted ? 'done' : 'not'}}">{{item.onboardingCompleted ? '✓完成' : '未完成'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="tip">课程/考试列显示「已完成/总数」，入职列表示是否完成全部入职要求</view>
+  </view>
+</view>
