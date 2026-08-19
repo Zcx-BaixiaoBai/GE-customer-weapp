@@ -1,7 +1,7 @@
 .ts-container { padding: 24rpx; min-height: 100vh; background: #f5f5f7; }
 .ts-header { text-align: center; padding: 40rpx 0 32rpx; }
 .ts-title { display: block; font-size: 36rpx; font-weight: 600; color: #1d1d1f; }
-.ts-sub { display: block; font-size: 24rpx; color: #86868b; margin-top: 12rpx; }
+.ts-sub { display: block; font-size: 24rpx; color: #86868b; margin-top: 12rpx; line-height: 1.5; }
 
 .seg { display: flex; background: #fff; border-radius: 16rpx; padding: 6rpx; margin-bottom: 24rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,.04); }
 .seg-item { flex: 1; text-align: center; padding: 18rpx 0; font-size: 28rpx; color: #86868b; border-radius: 12rpx; }
@@ -9,12 +9,26 @@
 
 .empty { text-align: center; color: #86868b; font-size: 26rpx; padding: 80rpx 0; }
 
-.tenant-card { display: flex; align-items: center; justify-content: space-between; background: #fff; border-radius: 16rpx; padding: 28rpx; margin-bottom: 16rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,.04); }
-.tenant-info { display: flex; flex-direction: column; }
-.tenant-name { font-size: 30rpx; font-weight: 600; color: #1d1d1f; }
-.tenant-path { font-size: 22rpx; color: #86868b; margin-top: 8rpx; }
-.tenant-arrow { font-size: 26rpx; color: #0071e3; font-weight: 600; }
+/* ===== 树状架构 ===== */
+.tree-box { background: #fff; border-radius: 16rpx; padding: 8rpx 0; box-shadow: 0 2rpx 12rpx rgba(0,0,0,.04); }
+.tree-node { display: flex; align-items: center; padding: 22rpx 16rpx; border-bottom: 2rpx solid #f5f5f7; }
+.tree-node:last-child { border-bottom: none; }
+.tree-node:active { background: #f5f5f7; }
 
+.tree-arrow { width: 32rpx; font-size: 24rpx; color: #c7c7cc; text-align: center; flex-shrink: 0; }
+.tree-arrow.open { color: #0071e3; }
+
+.type-badge { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 6rpx; color: #fff; flex-shrink: 0; margin-right: 12rpx; }
+.type-badge.t-project { background: #0071e3; }
+.type-badge.t-floor { background: #ff9500; }
+.type-badge.t-tenant { background: #34c759; }
+
+.node-name { font-size: 28rpx; color: #1d1d1f; flex: 1; }
+.node-name.is-tenant { font-weight: 600; }
+.node-code { font-size: 22rpx; color: #aeaeb2; margin-left: 8rpx; }
+.join-tag { font-size: 24rpx; color: #0071e3; font-weight: 600; flex-shrink: 0; margin-left: 8rpx; }
+
+/* ===== 新建租户 ===== */
 .create-box { background: #fff; border-radius: 16rpx; padding: 32rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,.04); }
 .field { margin-bottom: 20rpx; }
 .field-label { display: block; font-size: 24rpx; color: #86868b; margin-bottom: 12rpx; }

@@ -1,7 +1,7 @@
 <view class="ts-container">
   <view class="ts-header">
     <text class="ts-title">选择您的租户</text>
-    <text class="ts-sub">加入已有租户成为员工，或新建租户成为店长</text>
+    <text class="ts-sub">按架构浏览，点击租户加入；或新建租户成为店长</text>
   </view>
 
   <view class="seg">
@@ -9,18 +9,18 @@
     <view class="seg-item {{mode === 'create' ? 'active' : ''}}" bindtap="switchMode" data-mode="create">新建租户</view>
   </view>
 
-  <!-- 加入已有租户 -->
+  <!-- 树状架构 -->
   <view wx:if="{{mode === 'join'}}">
-    <view wx:if="{{loading}}" class="empty">加载中…</view>
-    <view wx:elif="{{tenants.length === 0}}" class="empty">暂无租户，请切换到「新建租户」</view>
-    <view wx:else>
-      <view class="tenant-card" wx:for="{{tenants}}" wx:key="id"
-            bindtap="joinTenant" data-id="{{item.id}}" data-name="{{item.name}}">
-        <view class="tenant-info">
-          <text class="tenant-name">{{item.name}}</text>
-          <text class="tenant-path">{{item.path}}</text>
-        </view>
-        <text class="tenant-arrow">加入</text>
+    <view wx:if="{{flatList.length === 0}}" class="empty">暂无架构数据，请切换到「新建租户」</view>
+    <view wx:else class="tree-box">
+      <view class="tree-node" wx:for="{{flatList}}" wx:key="id"
+            style="padding-left:{{24 + item.depth * 32}}rpx"
+            bindtap="onNodeTap" data-id="{{item.id}}">
+        <text class="tree-arrow {{item.expanded ? 'open' : ''}}">{{item.hasChildren ? (item.expanded ? '▾' : '▸') : '•'}}</text>
+        <text class="type-badge t-{{item.nodeType}}">{{item.typeLabel}}</text>
+        <text class="node-name {{item.isTenant ? 'is-tenant' : ''}}">{{item.name}}</text>
+        <text wx:if="{{item.code}}" class="node-code">{{item.code}}</text>
+        <text wx:if="{{item.isTenant}}" class="join-tag">加入 ›</text>
       </view>
     </view>
   </view>

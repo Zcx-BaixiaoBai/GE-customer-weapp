@@ -1,14 +1,20 @@
 var config = require('../../config/env');
 
+var TYPE_LABEL = { project: '项目', floor: '楼层', tenant: '租户' };
+
 Page({
   data: {
     phone: '',
-    mode: 'join',        // 'join' | 'create'
-    tenants: [],
-    loading: true,
+    mode: 'join',            // 'join' | 'create'
+    tree: [],
+    flatList: [],            // 展开后的可见节点列表
     newTenantName: '',
     submitting: false,
   },
+
+  // 非响应式状态：展开映射 + 节点索引
+  _expanded: {},
+  _index: {},
 
   onLoad: function () {
     var phone = wx.getStorageSync('user_phone') || '';
@@ -18,28 +24,87 @@ Page({
       return;
     }
     this.setData({ phone: phone });
-    this.loadTenants();
+    this.loadTree();
   },
 
-  loadTenants: function () {
+  loadTree: function () {
     var self = this;
-    var url = config.config.API_BASE_URL + '/org/tenants';
+    var url = config.config.API_BASE_URL + '/org/tree';
     wx.request({
       url: url,
       method: 'GET',
       timeout: 10000,
       success: function (res) {
         if (res.statusCode === 200 && res.data && res.data.code === 0) {
-          self.setData({ tenants: res.data.data || [], loading: false });
+          var tree = res.data.data || [];
+          self._expanded = {};
+          self._index = {};
+          self._buildIndex(tree);
+          // 默认全部展开（有子节点即展开），便于直接看到租户
+          (function walk(ns) {
+            (ns || []).forEach(function (n) {
+              if (n.children && n.children.length) {
+                self._expanded[n.id] = true;
+                walk(n.children);
+              }
+            });
+          })(tree);
+          self.setData({ tree: tree });
+          self._rebuild();
         } else {
-          self.setData({ loading: false });
+          self.setData({ flatList: [] });
         }
       },
       fail: function () {
-        self.setData({ loading: false });
-        wx.showToast({ title: '加载租户列表失败', icon: 'none' });
+        wx.showToast({ title: '加载架构失败', icon: 'none' });
       }
     });
+  },
+
+  _buildIndex: function (ns) {
+    var self = this;
+    (ns || []).forEach(function (n) {
+      self._index[n.id] = n;
+      if (n.children) self._buildIndex(n.children);
+    });
+  },
+
+  // 由 tree + 展开状态生成可见的扁平列表（带 depth）
+  _rebuild: function () {
+    var self = this;
+    var exp = self._expanded || {};
+    var flat = [];
+    (function walk(ns, depth) {
+      (ns || []).forEach(function (n) {
+        var hasCh = n.children && n.children.length;
+        flat.push({
+          id: n.id,
+          name: n.name,
+          code: n.code || '',
+          nodeType: n.nodeType,
+          typeLabel: TYPE_LABEL[n.nodeType] || n.nodeType,
+          depth: depth,
+          isTenant: n.nodeType === 'tenant',
+          hasChildren: !!hasCh,
+          expanded: !!exp[n.id]
+        });
+        if (hasCh && exp[n.id]) walk(n.children, depth + 1);
+      });
+    })(self.data.tree, 0);
+    self.setData({ flatList: flat });
+  },
+
+  // 点击节点：租户→加入；项目/楼层→展开收起
+  onNodeTap: function (e) {
+    var id = e.currentTarget.dataset.id;
+    var node = this._index[id];
+    if (!node) return;
+    if (node.nodeType === 'tenant') {
+      this.joinTenant(id, node.name);
+    } else {
+      this._expanded[id] = !this._expanded[id];
+      this._rebuild();
+    }
   },
 
   switchMode: function (e) {
@@ -50,9 +115,7 @@ Page({
     this.setData({ newTenantName: e.detail.value });
   },
 
-  joinTenant: function (e) {
-    var tenantId = e.currentTarget.dataset.id;
-    var tenantName = e.currentTarget.dataset.name;
+  joinTenant: function (tenantId, tenantName) {
     var self = this;
     wx.showModal({
       title: '确认加入',
