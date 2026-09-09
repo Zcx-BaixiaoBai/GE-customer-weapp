@@ -66,18 +66,17 @@ http://localhost:3000  ← 已在Docker中运行
 ```
 
 ### 2. 配置小程序
-编辑 `miniprogram/config/env.js`:
+复制 `miniprogram/config/env.js.example` 为 `miniprogram/config/env.js`（env.js 已 gitignore，密钥不入库）:
 ```javascript
 dev: {
-  FASTGPT_API_KEY: 'fastgpt-sKWqfSvj9qrl7Yo1XvM4F1LS2Tf7Y8s80IR7As7qvFqiaT2kbgg4I4ALG4tko8sy',  // ✅ 已配置
+  FASTGPT_API_KEY: 'fastgpt-……',  // 在 FastGPT 后台「应用 → API 密钥」生成后填入本地 env.js
   // V4版API Key已绑定应用，无需单独appId
 }
 ```
 
 **FastGPT 登录信息:**
 - 地址: http://localhost:3000
-- 账号: `root`
-- 密码: `FastGPT@2026`
+- 账号/密码: 不入库，见团队密码管理器（历史版本文档曾明文泄露，密码已需轮换）
 
 **在FastGPT后台操作（如需更换应用）:**
 1. 访问 http://localhost:3000

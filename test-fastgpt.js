@@ -37,10 +37,16 @@ function decodeArrayBuffer(buf) {
   }
 }
 
+const FASTGPT_API_KEY = process.env.FASTGPT_API_KEY;
+if (!FASTGPT_API_KEY) {
+  console.error('请先设置环境变量 FASTGPT_API_KEY（密钥不入库）');
+  process.exit(1);
+}
+
 fetch('http://localhost:3000/api/v1/chat/completions', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer fastgpt-sKWqfSvj9qrl7Yo1XvM4F1LS2Tf7Y8s80IR7As7qvFqiaT2kbgg4I4ALG4tko8sy',
+    'Authorization': 'Bearer ' + FASTGPT_API_KEY,
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({

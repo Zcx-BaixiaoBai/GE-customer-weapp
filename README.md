@@ -148,7 +148,7 @@ npm run start:dev
 
 1. 打开微信开发者工具
 2. 导入 `miniprogram/` 目录
-3. 修改 `config/env.js` 填写后端地址和 FastGPT 配置
+3. 复制 `config/env.js.example` 为 `config/env.js`（env.js 已 gitignore，密钥不入库），填写后端地址和 FastGPT 配置
 4. 编译运行
 
 ### Docker 部署
@@ -166,7 +166,8 @@ docker-compose up -d
 ├── miniprogram/              # 微信小程序
 │   ├── pages/                # 主包页面
 │   ├── subpackages/          # 分包
-│   ├── config/env.js         # 环境配置
+│   ├── config/env.js         # 环境配置（gitignore，从 env.js.example 复制）
+│   ├── config/env.js.example # 环境配置模板
 │   ├── services/             # 业务服务
 │   └── utils/                # 工具函数
 ├── server/                   # NestJS 后端

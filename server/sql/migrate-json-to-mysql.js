@@ -28,7 +28,7 @@ async function migrate() {
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '3306'),
     user: process.env.DB_USER || 'jinying',
-    password: process.env.DB_PASSWORD || 'jinying_db_2026',
+    password: process.env.DB_PASSWORD || '',   // 密码只从环境变量读取，禁止硬编码入库
     database: process.env.DB_NAME || 'jinying_property',
     charset: 'utf8mb4',
   });

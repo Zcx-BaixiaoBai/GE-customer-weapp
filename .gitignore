@@ -46,3 +46,7 @@ server/.env.production
 
 # DevTools rendering tooling (temp: automator scripts + screenshots)
 .devtools-scripts/
+
+# 本地环境配置（含密钥，永不入库；模板见 env.js.example）
+miniprogram/config/env.js
+miniprogram/config/env.js.bak.*
